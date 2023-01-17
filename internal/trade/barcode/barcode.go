@@ -1,0 +1,3 @@
+package barcode
+
+type ()
