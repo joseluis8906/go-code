@@ -1,0 +1,23 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "delivery",
+    srcs = [
+        "address.go",
+        "cashier.go",
+        "catalog.go",
+        "courier.go",
+        "customer.go",
+        "order.go",
+        "product.go",
+        "store.go",
+    ],
+    importpath = "github.com/joseluis8906/go-code/delivery",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "delivery_test",
+    srcs = ["delivery_test.go"],
+    deps = [":delivery"],
+)

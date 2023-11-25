@@ -1,0 +1,17 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "ordering",
+    srcs = ["ordering.go"],
+    importpath = "github.com/joseluis8906/go-code/ordering",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "ordering_test",
+    srcs = ["ordering_test.go"],
+    deps = [
+        ":ordering",
+        "@com_github_stretchr_testify//assert",
+    ],
+)

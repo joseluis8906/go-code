@@ -1,0 +1,23 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "financial",
+    srcs = [
+        "bank.go",
+        "money.go",
+    ],
+    importpath = "github.com/joseluis8906/go-code/financial",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "financial_test",
+    srcs = [
+        "bank_test.go",
+        "money_test.go",
+    ],
+    deps = [
+        ":financial",
+        "@com_github_stretchr_testify//assert",
+    ],
+)

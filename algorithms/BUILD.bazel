@@ -1,0 +1,30 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "algorithms",
+    srcs = [
+        "binary_gap.go",
+        "codility.go",
+        "insert_sort.go",
+        "main.go",
+        "merge_sort.go",
+        "quick_sort.go",
+    ],
+    importpath = "github.com/joseluis8906/go-code/algorithms",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "algorithms_test",
+    srcs = [
+        "binary_gap_test.go",
+        "codility_test.go",
+        "insert_sort_test.go",
+        "merge_sort_test.go",
+        "quick_sort_test.go",
+    ],
+    deps = [
+        ":algorithms",
+        "@com_github_stretchr_testify//assert",
+    ],
+)
