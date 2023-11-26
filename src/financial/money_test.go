@@ -3,7 +3,7 @@ package financial_test
 import (
 	"testing"
 
-	"github.com/joseluis8906/go-code/financial"
+	"github.com/joseluis8906/go-code/src/financial"
 	"github.com/stretchr/testify/assert"
 )
 

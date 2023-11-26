@@ -3,11 +3,13 @@ package algorithms_test
 import (
 	"testing"
 
-	"github.com/joseluis8906/go-code/algorithms"
+	"github.com/joseluis8906/go-code/src/algorithms"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestInsertSort(t *testing.T) {
+	t.Parallel()
+
 	want := []int{1, 2, 3, 4, 5, 6}
 	got := []int{5, 2, 4, 6, 1, 3}
 

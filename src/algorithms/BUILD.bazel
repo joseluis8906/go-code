@@ -6,11 +6,10 @@ go_library(
         "binary_gap.go",
         "codility.go",
         "insert_sort.go",
-        "main.go",
         "merge_sort.go",
         "quick_sort.go",
     ],
-    importpath = "github.com/joseluis8906/go-code/algorithms",
+    importpath = "github.com/joseluis8906/go-code/src/algorithms",
     visibility = ["//visibility:public"],
 )
 

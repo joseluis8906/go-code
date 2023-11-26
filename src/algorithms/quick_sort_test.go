@@ -3,11 +3,13 @@ package algorithms_test
 import (
 	"testing"
 
-	"github.com/joseluis8906/go-code/algorithms"
+	"github.com/joseluis8906/go-code/src/algorithms"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestQuickSort(t *testing.T) {
+	t.Parallel()
+
 	want := []int{0, 0, 0, 1, 2, 2, 3, 4, 5, 6, 7, 0, 0, 0}
 	got := []int{0, 0, 0, 2, 4, 5, 7, 1, 2, 3, 6, 0, 0, 0}
 
