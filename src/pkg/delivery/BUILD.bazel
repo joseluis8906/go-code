@@ -12,7 +12,7 @@ go_library(
         "product.go",
         "store.go",
     ],
-    importpath = "github.com/joseluis8906/go-code/src/delivery",
+    importpath = "github.com/joseluis8906/go-code/src/pkg/delivery",
     visibility = ["//visibility:public"],
 )
 

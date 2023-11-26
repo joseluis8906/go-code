@@ -3,7 +3,7 @@ package ordering_test
 import (
 	"testing"
 
-	"github.com/joseluis8906/go-code/src/ordering"
+	"github.com/joseluis8906/go-code/src/pkg/ordering"
 	"github.com/stretchr/testify/assert"
 )
 

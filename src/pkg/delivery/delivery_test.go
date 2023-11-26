@@ -3,7 +3,7 @@ package delivery_test
 import (
 	"fmt"
 
-	"github.com/joseluis8906/go-code/src/delivery"
+	"github.com/joseluis8906/go-code/src/pkg/delivery"
 )
 
 func ExampleOrder_IsCompleted() {

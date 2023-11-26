@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package dhps;
+
+option go_package = "github.com/joseluis8906/go-code/idl/ghpspb";
+
+service Dhps {
+  rpc CustomerLooksForProduct(CustomerLooksForProductRequest) returns (CustomerLooksForProductResponse);
+}
+
+message CustomerLooksForProductRequest {
+  uint64 customer_id = 1;
+  string product_name = 2;
+}
+
+message CustomerLooksForProductResponse {
+  repeated CustomerLooksForProductResponseProduct products = 1;
+}
+
+message CustomerLooksForProductResponseProduct {
+  uint64 product_id = 1;
+  string product_name = 2;
+  string store_name = = 3;
+}

@@ -20,7 +20,19 @@ http_archive(
     ],
 )
 
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "a79d19dcdf9139fa4b81206e318e33d245c4c9da1ffed21c87288ed4380426f9",
+    strip_prefix = "protobuf-3.11.4",
+    # latest, as of 2020-02-21
+    urls = [
+        "https://mirror.bazel.build/github.com/protocolbuffers/protobuf/archive/v3.11.4.tar.gz",
+        "https://github.com/protocolbuffers/protobuf/archive/v3.11.4.tar.gz",
+    ],
+)
+
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 ############################################################
@@ -83,6 +95,8 @@ load("//:deps.bzl", "go_dependencies")
 go_dependencies()
 
 go_rules_dependencies()
+
+protobuf_deps()
 
 go_register_toolchains(version = "1.20.5")
 

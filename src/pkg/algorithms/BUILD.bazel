@@ -9,7 +9,7 @@ go_library(
         "merge_sort.go",
         "quick_sort.go",
     ],
-    importpath = "github.com/joseluis8906/go-code/src/algorithms",
+    importpath = "github.com/joseluis8906/go-code/src/pkg/algorithms",
     visibility = ["//visibility:public"],
 )
 

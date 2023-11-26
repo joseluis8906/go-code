@@ -6,7 +6,7 @@ go_library(
         "bank.go",
         "money.go",
     ],
-    importpath = "github.com/joseluis8906/go-code/src/financial",
+    importpath = "github.com/joseluis8906/go-code/src/pkg/financial",
     visibility = ["//visibility:public"],
 )
 
