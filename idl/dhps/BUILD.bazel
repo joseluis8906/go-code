@@ -3,22 +3,22 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 proto_library(
-    name = "ghpspb_proto",
-    srcs = ["dhcps.proto"],
+    name = "dhpspb_proto",
+    srcs = ["dhps.proto"],
     visibility = ["//visibility:public"],
 )
 
 go_proto_library(
-    name = "ghpspb_go_proto",
+    name = "dhpspb_go_proto",
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
-    importpath = "github.com/joseluis8906/go-code/idl/ghpspb",
-    proto = ":ghpspb_proto",
+    importpath = "github.com/joseluis8906/go-code/idl/dhpspb",
+    proto = ":dhpspb_proto",
     visibility = ["//visibility:public"],
 )
 
 go_library(
-    name = "ghpspb",
-    embed = [":ghpspb_go_proto"],
-    importpath = "github.com/joseluis8906/go-code/idl/ghpspb",
+    name = "dhpspb",
+    embed = [":dhpspb_go_proto"],
+    importpath = "github.com/joseluis8906/go-code/idl/dhpspb",
     visibility = ["//visibility:public"],
 )

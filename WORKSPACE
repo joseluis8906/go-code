@@ -22,17 +22,25 @@ http_archive(
 
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "a79d19dcdf9139fa4b81206e318e33d245c4c9da1ffed21c87288ed4380426f9",
-    strip_prefix = "protobuf-3.11.4",
-    # latest, as of 2020-02-21
+    sha256 = "540200ef1bb101cf3f86f257f7947035313e4e485eea1f7eed9bc99dd0e2cb68",
+    strip_prefix = "protobuf-3.25.0",
+    # latest, as of 2023-11-02
     urls = [
-        "https://mirror.bazel.build/github.com/protocolbuffers/protobuf/archive/v3.11.4.tar.gz",
-        "https://github.com/protocolbuffers/protobuf/archive/v3.11.4.tar.gz",
+        "https://github.com/protocolbuffers/protobuf/archive/v3.25.0.tar.gz",
     ],
 )
 
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
+http_archive(
+    name = "rules_proto",
+    sha256 = "903af49528dc37ad2adbb744b317da520f133bc1cbbecbdd2a6c546c9ead080b",
+    strip_prefix = "rules_proto-6.0.0-rc0",
+    url = "https://github.com/bazelbuild/rules_proto/releases/download/6.0.0-rc0/rules_proto-6.0.0-rc0.tar.gz",
+)
+
+load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 ############################################################
@@ -77,8 +85,8 @@ go_repository(
     name = "in_gopkg_check_v1",
     build_file_proto_mode = "disable_global",
     importpath = "gopkg.in/check.v1",
-    sum = "h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=",
-    version = "v0.0.0-20161208181325-20d25e280405",
+    sum = "h1:BLraFXnmrev5lT+xlilqcH8XK9/i0At2xKjWk4p6zsU=",
+    version = "v1.0.0-20200227125254-8fa46927fb4f",
 )
 
 go_repository(
@@ -89,6 +97,14 @@ go_repository(
     version = "v3.0.1",
 )
 
+go_repository(
+    name = "org_golang_google_grpc",
+    build_file_proto_mode = "disable",
+    importpath = "google.golang.org/grpc",
+    sum = "h1:f+PlOh7QV4iIJkPrx5NQ7qaNGFQ3OTse67yaDHfju4E=",
+    version = "v1.41.0",
+)
+
 load("//:deps.bzl", "go_dependencies")
 
 # gazelle:repository_macro deps.bzl%go_dependencies
@@ -96,8 +112,12 @@ go_dependencies()
 
 go_rules_dependencies()
 
-protobuf_deps()
-
-go_register_toolchains(version = "1.20.5")
+go_register_toolchains(version = "1.21.4")
 
 gazelle_dependencies()
+
+protobuf_deps()
+
+rules_proto_dependencies()
+
+rules_proto_toolchains()

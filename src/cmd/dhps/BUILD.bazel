@@ -5,7 +5,12 @@ go_library(
     srcs = ["main.go"],
     importpath = "github.com/joseluis8906/go-code/src/cmd/dhps",
     visibility = ["//visibility:private"],
-    deps = ["@org_uber_go_fx//:fx"],
+    deps = [
+        "//idl/dhps:dhpspb",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//reflection",
+        "@org_uber_go_fx//:fx",
+    ],
 )
 
 go_binary(

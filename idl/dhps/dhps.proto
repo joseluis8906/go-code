@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package dhps;
 
-option go_package = "github.com/joseluis8906/go-code/idl/ghpspb";
+option go_package = "github.com/joseluis8906/go-code/idl/dhpspb";
 
 service Dhps {
   rpc CustomerLooksForProduct(CustomerLooksForProductRequest) returns (CustomerLooksForProductResponse);
@@ -20,5 +20,5 @@ message CustomerLooksForProductResponse {
 message CustomerLooksForProductResponseProduct {
   uint64 product_id = 1;
   string product_name = 2;
-  string store_name = = 3;
+  string store_name = 3;
 }
