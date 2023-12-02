@@ -4,21 +4,20 @@ package dhps;
 
 option go_package = "github.com/joseluis8906/go-code/idl/dhpspb";
 
-service Dhps {
-  rpc CustomerLooksForProduct(CustomerLooksForProductRequest) returns (CustomerLooksForProductResponse);
+message Product {
+  uint64 ref = 1;
+  string name = 2;
 }
 
-message CustomerLooksForProductRequest {
-  uint64 customer_id = 1;
+service Delivery {
+  rpc CustomerAsksForAProduct(CustomerAsksForAProductReq) returns (CustomerAsksForAProductRes);
+}
+
+message CustomerAsksForAProductReq {
+  string customer_email = 1;
   string product_name = 2;
 }
 
-message CustomerLooksForProductResponse {
-  repeated CustomerLooksForProductResponseProduct products = 1;
-}
-
-message CustomerLooksForProductResponseProduct {
-  uint64 product_id = 1;
-  string product_name = 2;
-  string store_name = 3;
+message CustomerAsksForAProductRes {
+  repeated Product products = 1;
 }

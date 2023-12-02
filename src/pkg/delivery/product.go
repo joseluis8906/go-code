@@ -2,14 +2,14 @@ package delivery
 
 // Product represents a product.
 type Product struct {
-	Code int
+	Ref  uint64
 	Name string
 }
 
 // NewProduct creates a new product.
-func NewProduct(code int, name string) Product {
+func NewProduct(ref uint64, name string) Product {
 	return Product{
-		Code: code,
+		Ref:  ref,
 		Name: name,
 	}
 }

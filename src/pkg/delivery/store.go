@@ -2,6 +2,7 @@ package delivery
 
 // Store represents a store.
 type Store struct {
+	ID       uint64
 	Name     string
 	Products []Product
 	Orders   []*Order
@@ -9,8 +10,9 @@ type Store struct {
 }
 
 // NewStore creates a new store.
-func NewStore(name string, address Address, products ...Product) *Store {
+func NewStore(id uint64, name string, address Address, products ...Product) *Store {
 	return &Store{
+		ID:       id,
 		Name:     name,
 		Address:  address,
 		Products: products,
@@ -39,7 +41,8 @@ func (s *Store) Delivers(theOrder *Order) *StoreDeliversTheOrderToCourierAction 
 
 // StoreDeliversTheOrderToCourierAction represents an action of a store.
 type StoreDeliversTheOrderToCourierAction struct {
-	order *Order
+	order   *Order
+	courier *Courier
 }
 
 // NewStoreDeliversTheOrderToCourierAction creates a new action of a store.
@@ -48,6 +51,12 @@ func NewStoreDeliversTheOrderToCourierAction(order *Order) *StoreDeliversTheOrde
 }
 
 // To delivers an order to a courier.
-func (a *StoreDeliversTheOrderToCourierAction) To(theCourier *Courier) {
-	theCourier.PicksUp(a.order)
+func (a *StoreDeliversTheOrderToCourierAction) To(theCourier *Courier) *StoreDeliversTheOrderToCourierAction {
+	a.courier = theCourier
+
+	return a
+}
+
+func (a *StoreDeliversTheOrderToCourierAction) Do() {
+	a.courier.PicksUp(a.order)
 }

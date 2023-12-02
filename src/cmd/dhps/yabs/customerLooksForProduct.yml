@@ -1,4 +1,0 @@
-method: dhps.Dhps.CustomerLooksForProduct
-request:
-  customer_id: 1
-  product_name: Chess Burger

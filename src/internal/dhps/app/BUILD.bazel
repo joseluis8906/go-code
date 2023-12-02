@@ -1,0 +1,18 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "app",
+    srcs = [
+        "delivery_service.go",
+        "module.go",
+    ],
+    importpath = "github.com/joseluis8906/go-code/src/internal/dhps/app",
+    visibility = ["//src:__subpackages__"],
+    deps = [
+        "//idl/dhps:dhpspb",
+        "//src/internal/dhps/domain",
+        "//src/internal/dhps/infra",
+        "//src/pkg/delivery",
+        "@org_uber_go_fx//:fx",
+    ],
+)

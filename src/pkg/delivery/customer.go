@@ -4,6 +4,7 @@ import "math/rand"
 
 // Customer represents a customer.
 type Customer struct {
+	Email        string
 	Name         string
 	Address      Address
 	Orders       []*Order
@@ -11,11 +12,35 @@ type Customer struct {
 }
 
 // NewCustomer creates a new customer.
-func NewCustomer(name string, address Address) *Customer {
-	return &Customer{
+func NewCustomer(email string, name string, address Address) Customer {
+	return Customer{
+		Email:   email,
 		Name:    name,
 		Address: address,
 	}
+}
+
+// IsZero returns true if the customer is zero.
+func (c *Customer) IsZero() bool {
+	return c.Email == ""
+}
+
+// AsksFor asks for a product.
+func (c *Customer) AsksFor(product Product) *CustomerAsksForProductAction {
+	return NewCustomerAsksForProductAction(product)
+}
+
+// ChoosesAProductFrom chooses a product from a list of products.
+func (c *Customer) ChoosesAProductFrom(theListOfSuggestions []Product) Product {
+	min := 0
+	max := len(theListOfSuggestions) - 1
+
+	return theListOfSuggestions[rand.Intn(max-min)]
+}
+
+// Receives receives an order.
+func (c *Customer) Receives(theOrder *Order) {
+	theOrder.IsNowDelivered()
 }
 
 // Confirms confirms the delivery of an order.
@@ -23,38 +48,38 @@ func (c *Customer) Confirms(theOrder *Order) *CustomerConfirmsDeliveryAction {
 	return NewCustomerConfirmsDeliveryAction(theOrder)
 }
 
-// LooksFor looks for a product in the catalog.
-func (c *Customer) LooksFor(criteria Product) *CustomerLooksForProductAction {
-	return NewCustomerLooksForProductAction(criteria)
-}
+type (
+	// CustomerAsksForProductAction represents an action of a customer.
+	CustomerAsksForProductAction struct {
+		product   Product
+		assistant *Assistant
+	}
 
-// CustomerLooksForProductAction represents an action of a customer.
-type CustomerLooksForProductAction struct {
-	product Product
-}
+	// CustomerConfirmsDeliveryAction represents an action of a customer.
+	CustomerConfirmsDeliveryAction struct {
+		order *Order
+	}
+)
 
-// NewCustomerLooksForProductAction creates a new action of a customer.
-func NewCustomerLooksForProductAction(product Product) *CustomerLooksForProductAction {
-	return &CustomerLooksForProductAction{product: product}
-}
-
-// Using uses a catalog to find a product.
-func (c *CustomerLooksForProductAction) Using(theCatalog *Catalog) Product {
-	products := theCatalog.ProductsByName(c.product.Name)
-	min := 0
-	max := len(products) - 1
-
-	return products[rand.Intn(max-min)]
-}
-
-// CustomerConfirmsDeliveryAction represents an action of a customer.
-type CustomerConfirmsDeliveryAction struct {
-	order *Order
+func NewCustomerAsksForProductAction(product Product) *CustomerAsksForProductAction {
+	return &CustomerAsksForProductAction{product: product}
 }
 
 // NewCustomerConfirmsDeliveryAction creates a new action of a customer.
 func NewCustomerConfirmsDeliveryAction(order *Order) *CustomerConfirmsDeliveryAction {
 	return &CustomerConfirmsDeliveryAction{order: order}
+}
+
+// To sets the assistant of the action.
+func (c *CustomerAsksForProductAction) To(theAssistant *Assistant) *CustomerAsksForProductAction {
+	c.assistant = theAssistant
+
+	return c
+}
+
+// To sets the assistant of the action.
+func (c *CustomerAsksForProductAction) Do() []Product {
+	return c.assistant.LooksForAProduct(c.product)
 }
 
 // WasReceived confirms the delivery of an order.

@@ -3,15 +3,12 @@ build:
 	@gazelle .
 	@bazel build .
 
-.PHONY: build-bsd
-build-bsd:
+.PHONY: build-freebsd
+build-freebsd:
 	@gazelle .
 	@bazel build --platforms=@io_bazel_rules_go//go/toolchain:freebsd_amd64 .
 
 .PHONY: run
 run:
+	@gazelle .
 	@bazel run .
-
-.PHONY: debug
-debug:
-	@dlv debug --headless --listen=:2345 --api-version=2 -- $$(bazel info bazel-bin)/src/cmd/dhps/dhps_/dhps

@@ -4,7 +4,7 @@ go_library(
     name = "delivery",
     srcs = [
         "address.go",
-        "cashier.go",
+        "assistant.go",
         "catalog.go",
         "courier.go",
         "customer.go",

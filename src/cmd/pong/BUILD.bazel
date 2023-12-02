@@ -1,0 +1,14 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "pong_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/joseluis8906/go-code/src/cmd/pong",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "pong",
+    embed = [":pong_lib"],
+    visibility = ["//visibility:public"],
+)

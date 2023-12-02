@@ -9,52 +9,59 @@ import (
 func ExampleOrder_IsCompleted() {
 	city := "Greensboro"
 
-	theCatalog := delivery.NewCatalog([]*delivery.Store{
-		delivery.NewStore(
-			"McDonald's",
-			delivery.NewAddress("3003 SW 34th St", city),
-			delivery.NewProduct(1, "Chess Burger"),
-			delivery.NewProduct(2, "French Fries"),
-			delivery.NewProduct(3, "Coke"),
-		),
+	theAssistant := delivery.NewAssistant(
+		"Rappi",
+		delivery.NewCatalog([]*delivery.Store{
+			delivery.NewStore(
+				1,
+				"McDonald's",
+				delivery.NewAddress("3003 SW 34th St", city),
+				delivery.NewProduct(1, "Chess Burger"),
+				delivery.NewProduct(2, "French Fries"),
+				delivery.NewProduct(3, "Coke"),
+			),
+			delivery.NewStore(
+				2,
+				"Burger King",
+				delivery.NewAddress("2304 Franklin Ave", city),
+				delivery.NewProduct(4, "Chess Burger"),
+				delivery.NewProduct(5, "French Fries"),
+				delivery.NewProduct(6, "Coke"),
+			),
+		}),
+	)
 
-		delivery.NewStore(
-			"Burger King",
-			delivery.NewAddress("2304 Franklin Ave", city),
-			delivery.NewProduct(4, "Chess Burger"),
-			delivery.NewProduct(5, "French Fries"),
-			delivery.NewProduct(6, "Coke"),
-		),
-	})
-
-	theCustomer := delivery.NewCustomer("Ellie Hang", delivery.NewAddress("211 Southside Square", city))
-	theCashier := delivery.NewCashier("Uber Eats")
+	theCustomer := delivery.NewCustomer("ellie.hang@example.com", "Ellie Hang", delivery.NewAddress("211 Southside Square", city))
 	theCourier := delivery.NewCourier("John Doe")
 
 	// everything starts when
-	theFirstProduct := theCustomer.LooksFor(delivery.ProductName("Chess Burger")).Using(theCatalog)
+	listOfSuggestions := theCustomer.AsksFor(delivery.ProductName("Chess Burger")).To(theAssistant).Do()
 	// then
-	theStore := theCashier.LocatesTheStore().Of(theFirstProduct).Using(theCatalog)
+	theFirstProduct := theCustomer.ChoosesAProductFrom(listOfSuggestions)
 	// then
-	theOrder := theCashier.CreatesAnOrder().Using(theCatalog).On(theStore).For(theCustomer).With(theFirstProduct)
+	theStore := theAssistant.LocatesTheStoreOf(theFirstProduct)
+	// then
+	theOrder := theAssistant.CreatesAnOrder().On(theStore).For(&theCustomer).Adding(theFirstProduct).Do()
 	// and
-	anotherProduct := theCustomer.LooksFor(delivery.ProductName("Coke")).Using(theCatalog)
+	listOfSuggestions = theCustomer.AsksFor(delivery.ProductName("Coke")).To(theAssistant).Do()
+	// when
+	anotherProduct := theCustomer.ChoosesAProductFrom(listOfSuggestions)
 	// then
-	theCashier.Adds(anotherProduct).To(theOrder)
+	theAssistant.Adds(anotherProduct).To(theOrder).Do()
 	// once all products are added to the order
-	theCashier.Sends(theOrder).To(theStore)
-	// after a while
+	theAssistant.Sends(theOrder).To(theStore).Do()
+	// and after a while
 	theStore.BeginsToPrepare(theOrder)
 	// then
 	theCourier.GoesUpTo(theStore.Address)
 	// and when
 	theStore.FinishesPreparing(theOrder)
 	// then
-	theStore.Delivers(theOrder).To(theCourier)
+	theStore.Delivers(theOrder).To(theCourier).Do()
 	// then
 	theCourier.GoesUpTo(theCustomer.Address)
 	// and once there
-	theCourier.Delivers(theOrder).To(theCustomer)
+	theCourier.Delivers(theOrder).To(&theCustomer).Do()
 	// finally
 	theCustomer.Confirms(theOrder).WasReceived()
 	// and if everything is ok then that's it!

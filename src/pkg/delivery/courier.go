@@ -29,7 +29,8 @@ func (c *Courier) Delivers(theOrder *Order) *CourierDeliversOrderToCustomerActio
 
 // CourierDeliversOrderToCustomerAction represents an action of a courier.
 type CourierDeliversOrderToCustomerAction struct {
-	order *Order
+	order    *Order
+	customer *Customer
 }
 
 // NewCourierDeliversOrderToCustomerAction creates a new action of a courier.
@@ -37,7 +38,14 @@ func NewCourierDeliversOrderToCustomerAction(order *Order) *CourierDeliversOrder
 	return &CourierDeliversOrderToCustomerAction{order: order}
 }
 
-// To delivers an order to a customer.
-func (a *CourierDeliversOrderToCustomerAction) To(theCustomer *Customer) {
-	a.order.IsNowDelivered()
+// To sets the customer of an order.
+func (a *CourierDeliversOrderToCustomerAction) To(theCustomer *Customer) *CourierDeliversOrderToCustomerAction {
+	a.customer = theCustomer
+
+	return a
+}
+
+// Do delivers an order to a customer.
+func (a *CourierDeliversOrderToCustomerAction) Do() {
+	a.customer.Receives(a.order)
 }

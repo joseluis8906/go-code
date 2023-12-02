@@ -1,0 +1,16 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "infra",
+    srcs = [
+        "assistant_inmemory_repository.go",
+        "customer_inmemory_repository.go",
+        "module.go",
+    ],
+    importpath = "github.com/joseluis8906/go-code/src/internal/dhps/infra",
+    visibility = ["//src:__subpackages__"],
+    deps = [
+        "//src/pkg/delivery",
+        "@org_uber_go_fx//:fx",
+    ],
+)
