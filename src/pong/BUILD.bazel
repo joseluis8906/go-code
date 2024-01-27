@@ -1,0 +1,12 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "pong",
+    srcs = ["service.go"],
+    importpath = "github.com/joseluis8906/go-code/src/pong",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//proto/pong:pongpb",
+        "@org_uber_go_fx//:fx",
+    ],
+)

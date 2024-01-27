@@ -2,17 +2,15 @@ package delivery
 
 // Store represents a store.
 type Store struct {
-	ID       uint64
 	Name     string
+	Address  Address
 	Products []Product
 	Orders   []*Order
-	Address  Address
 }
 
 // NewStore creates a new store.
-func NewStore(id uint64, name string, address Address, products ...Product) *Store {
+func NewStore(name string, address Address, products ...Product) *Store {
 	return &Store{
-		ID:       id,
 		Name:     name,
 		Address:  address,
 		Products: products,

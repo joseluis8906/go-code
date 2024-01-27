@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "jte_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/joseluis8906/go-code/src/jte/cmd/jte",
+    visibility = ["//visibility:private"],
+    deps = ["@com_github_gdamore_tcell_v2//:tcell"],
+)
+
+go_binary(
+    name = "jte",
+    embed = [":jte_lib"],
+    visibility = ["//visibility:public"],
+)

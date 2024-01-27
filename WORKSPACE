@@ -3,6 +3,29 @@ workspace(name = "com_github_joseluis8906_go_code")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
+    name = "toolchains_llvm",
+    canonical_id = "0.10.3",
+    sha256 = "b7cd301ef7b0ece28d20d3e778697a5e3b81828393150bed04838c0c52963a01",
+    strip_prefix = "toolchains_llvm-0.10.3",
+    url = "https://github.com/grailbio/bazel-toolchain/releases/download/0.10.3/toolchains_llvm-0.10.3.tar.gz",
+)
+
+load("@toolchains_llvm//toolchain:deps.bzl", "bazel_toolchain_dependencies")
+
+bazel_toolchain_dependencies()
+
+load("@toolchains_llvm//toolchain:rules.bzl", "llvm_toolchain")
+
+llvm_toolchain(
+    name = "llvm_toolchain",
+    llvm_version = "16.0.0",
+)
+
+load("@llvm_toolchain//:toolchains.bzl", "llvm_register_toolchains")
+
+llvm_register_toolchains()
+
+http_archive(
     name = "io_bazel_rules_go",
     sha256 = "91585017debb61982f7054c9688857a2ad1fd823fc3f9cb05048b0025c47d023",
     urls = [
@@ -53,16 +76,16 @@ go_repository(
     name = "com_github_davecgh_go_spew",
     build_file_proto_mode = "disable_global",
     importpath = "github.com/davecgh/go-spew",
-    sum = "h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=",
-    version = "v1.1.1",
+    sum = "h1:U9qPSI2PIWSS1VwoXQT9A3Wy9MM3WgvqSxFWenqJduM=",
+    version = "v1.1.2-0.20180830191138-d8f796af33cc",
 )
 
 go_repository(
     name = "com_github_pmezard_go_difflib",
     build_file_proto_mode = "disable_global",
     importpath = "github.com/pmezard/go-difflib",
-    sum = "h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=",
-    version = "v1.0.0",
+    sum = "h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=",
+    version = "v1.0.1-0.20181226105442-5d4384ee4fb2",
 )
 
 go_repository(

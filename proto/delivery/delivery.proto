@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package dhps;
+
+import "google/protobuf/wrappers.proto";
+
+option go_package = "github.com/joseluis8906/go-code/protobuf/delivery/customerpb";
+
+message Product {
+  google.protobuf.StringValue ref = 1;
+  google.protobuf.StringValue name = 2;
+}
+
+service Customer {
+  rpc AsksForAProduct(AsksForAProductReq) returns (AsksForAProductRes);
+}
+
+message AsksForAProductReq {
+  google.protobuf.StringValue customer_email = 1;
+  google.protobuf.StringValue product_name = 2;
+}
+
+message AsksForAProductRes {
+  repeated Product products = 1;
+}

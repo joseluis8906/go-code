@@ -1,4 +1,0 @@
-method: dhps.Delivery.CustomerAsksForAProduct
-request:
-  customer_email: ellie.hang@example.com
-  product_name: Chess

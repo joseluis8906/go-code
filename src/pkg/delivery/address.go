@@ -2,14 +2,16 @@ package delivery
 
 // Address represents an address.
 type Address struct {
-	Street string
-	City   string
+	Name    string
+	City    string
+	Country string
 }
 
 // NewAddress creates a new address.
-func NewAddress(street, city string) Address {
+func NewAddress(name, city, country string) Address {
 	return Address{
-		Street: street,
-		City:   city,
+		Name:    name,
+		City:    city,
+		Country: country,
 	}
 }

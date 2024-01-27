@@ -1,0 +1,27 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "customer",
+    srcs = [
+        "asks_for_a_product.go",
+        "customer.go",
+        "fields.go",
+        "repository.go",
+    ],
+    importpath = "github.com/joseluis8906/go-code/src/delivery/internal/customer",
+    visibility = ["//src/delivery:__subpackages__"],
+    deps = [
+        "//src/pkg/cmp",
+        "//src/pkg/repository",
+        "@org_mongodb_go_mongo_driver//bson",
+        "@org_mongodb_go_mongo_driver//mongo",
+        "@org_mongodb_go_mongo_driver//mongo/options",
+    ],
+)
+
+go_test(
+    name = "customer_test",
+    srcs = ["customer_test.go"],
+    embed = [":customer"],
+    deps = ["@com_github_stretchr_testify//assert"],
+)

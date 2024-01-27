@@ -16,6 +16,11 @@ func NewAssistant(name string, catalog *Catalog) *Assistant {
 	}
 }
 
+// Using sets the catalog.
+func (c *Assistant) Using(theCatalog *Catalog) {
+	c.Catalog = theCatalog
+}
+
 // CreatesAnOrder creates an order.
 func (c *Assistant) LooksForAProduct(query Product) []Product {
 	var suggestedProducts []Product

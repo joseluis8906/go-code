@@ -7,31 +7,30 @@ import (
 )
 
 func ExampleOrder_IsCompleted() {
+	country := "USA"
 	city := "Greensboro"
 
 	theAssistant := delivery.NewAssistant(
 		"Rappi",
 		delivery.NewCatalog([]*delivery.Store{
 			delivery.NewStore(
-				1,
 				"McDonald's",
-				delivery.NewAddress("3003 SW 34th St", city),
-				delivery.NewProduct(1, "Chess Burger"),
-				delivery.NewProduct(2, "French Fries"),
-				delivery.NewProduct(3, "Coke"),
+				delivery.NewAddress("3003 SW 34th St", city, country),
+				delivery.NewProduct("CHB-001", "Chess Burger"),
+				delivery.NewProduct("FRF-001", "French Fries"),
+				delivery.NewProduct("COK-001", "Coke"),
 			),
 			delivery.NewStore(
-				2,
 				"Burger King",
-				delivery.NewAddress("2304 Franklin Ave", city),
-				delivery.NewProduct(4, "Chess Burger"),
-				delivery.NewProduct(5, "French Fries"),
-				delivery.NewProduct(6, "Coke"),
+				delivery.NewAddress("2304 Franklin Ave", city, country),
+				delivery.NewProduct("CHB-002", "Chess Burger"),
+				delivery.NewProduct("FRF-002", "French Fries"),
+				delivery.NewProduct("COK-002", "Coke"),
 			),
 		}),
 	)
 
-	theCustomer := delivery.NewCustomer("ellie.hang@example.com", "Ellie Hang", delivery.NewAddress("211 Southside Square", city))
+	theCustomer := delivery.NewCustomer("ellie.hang@example.com", "Ellie Hang", delivery.NewAddress("211 Southside Square", city, country))
 	theCourier := delivery.NewCourier("John Doe")
 
 	// everything starts when

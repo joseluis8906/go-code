@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package pong;
+
+option go_package = "github.com/joseluis8906/go-code/idl/pongpb";
+
+service Ping {
+  rpc Pong(PingReq) returns (PongRes);
+}
+
+message PingReq {
+  string message = 1;
+}
+
+message PongRes {
+  string message = 1;
+}

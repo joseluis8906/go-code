@@ -1,0 +1,101 @@
+package customer
+
+import (
+	"context"
+
+	"github.com/joseluis8906/go-code/src/pkg/cmp"
+	"github.com/joseluis8906/go-code/src/pkg/repository"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+)
+
+// CustomerRepository represents an in-memory repository for customers.
+type Repository struct {
+	client     *mongo.Client
+	db         string
+	collection string
+}
+
+// NewCustomerRepository returns a new instance of CustomerInMemoryRepository.
+func NewRepository(ctx context.Context, uri string) (*Repository, error) {
+	conn, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
+	if err != nil {
+		return nil, err
+	}
+
+	db := "delivery"
+	collection := "customers"
+	indexes := []mongo.IndexModel{
+		{
+			Keys:    bson.D{{"Email", 1}},
+			Options: options.Index().SetUnique(true),
+		},
+	}
+
+	_, err = conn.Database(db).
+		Collection(collection).
+		Indexes().
+		CreateMany(ctx, indexes)
+
+	if err != nil {
+		return nil, err
+	}
+
+	repo := &Repository{
+		client:     conn,
+		db:         db,
+		collection: collection,
+	}
+
+	return repo, nil
+}
+
+// Matching returns the customer for the given email.
+func (r *Repository) Matching(ctx context.Context, criteria cmp.Criteria) repository.Result[Customer] {
+	var result []Customer
+
+	opts := options.Find().
+		SetLimit(repository.Limit).
+		SetSkip(repository.Page(criteria.Page()))
+
+	query := bson.D{
+		{
+			Key: criteria.Field(),
+			Value: bson.D{
+				{
+					Key:   criteria.Operator(),
+					Value: criteria.Value(),
+				},
+			},
+		},
+	}
+
+	cursor, err := r.client.Database(r.db).Collection(r.collection).Find(ctx, query, opts)
+	if err != nil {
+		return repository.Error[Customer](err)
+	}
+
+	if err = cursor.All(ctx, &result); err != nil {
+		return repository.Error[Customer](err)
+	}
+
+	return repository.Data(result)
+}
+
+func (r *Repository) Save(ctx context.Context, aCustomer Customer) error {
+	opts := options.Update().SetUpsert(true)
+	filter := bson.D{
+		{
+			Key:   EmailField,
+			Value: aCustomer.Email.String(),
+		},
+	}
+
+	_, err := r.client.Database(r.db).
+		Collection(r.collection).
+		UpdateOne(ctx, filter, aCustomer, opts)
+
+	return err
+}

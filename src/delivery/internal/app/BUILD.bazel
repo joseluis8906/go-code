@@ -1,0 +1,26 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "app",
+    srcs = [
+        "app.go",
+        "grpc_customer.go",
+        "grpc_customer_asks_for_product.go",
+        "module.go",
+        "repository_registry.go",
+    ],
+    importpath = "github.com/joseluis8906/go-code/src/delivery/internal/app",
+    visibility = ["//src/delivery:__subpackages__"],
+    deps = [
+        "//proto/delivery:customerpb",
+        "//src/delivery/internal/customer",
+        "//src/delivery/internal/product",
+        "//src/delivery/internal/waiter",
+        "//src/pkg/cmp",
+        "//src/pkg/gglpb",
+        "@com_github_nats_io_nats_go//:nats_go",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//reflection",
+        "@org_uber_go_fx//:fx",
+    ],
+)
