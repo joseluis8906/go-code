@@ -11,6 +11,13 @@ test:
 	@gazelle .
 	@bazel test //src/$(PROJECT_NAME)/...
 
+.PHONY: coverage
+coverage:
+	@echo $$NAME
+	# @gazelle .
+	# @bazel coverage //src/$(PROJECT_NAME)/$$PKG/...
+	# @genhtml --no-branch-coverage -output genhtml "$(bazel info output_path)/k8-fastbuild/testlogs/src/delivery/internal/customer/customer_test/coverage.dat"
+
 .PHONY: clean
 clean:
 	@bazel clean
@@ -27,3 +34,4 @@ run:
 .PHONY: debug
 debug:
 	@dlv debug --headless --listen=:2345 --api-version=2 -- $$(bazel info bazel-bin)/src/cmd/$(PROJECT_NAME)/$(PROJECT_NAME)_/$(PROJECT_NAME)
+
