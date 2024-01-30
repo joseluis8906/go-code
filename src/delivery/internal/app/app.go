@@ -8,6 +8,9 @@ import (
 
 	"github.com/joseluis8906/go-code/protobuf/delivery/customerpb"
 
+	"github.com/joseluis8906/go-code/src/delivery/internal/app/apicustomer"
+	"github.com/joseluis8906/go-code/src/delivery/internal/app/apistoremanager"
+
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
 	"google.golang.org/grpc"
@@ -18,9 +21,11 @@ type (
 	Params struct {
 		fx.In
 
-		Config          *viper.Viper
-		Logger          *log.Logger
-		CustomerService *CustomerService
+		Config *viper.Viper
+		Logger *log.Logger
+
+		CustomerServer     *apicustomer.GRPCServer
+		StoreManagerServer *apistoremanager.GRPCServer
 	}
 )
 
@@ -34,7 +39,7 @@ func NewGRPCServer(lc fx.Lifecycle, params Params) *grpc.Server {
 				return err
 			}
 
-			customerpb.RegisterCustomerServer(grpcServer, params.CustomerService)
+			customerpb.RegisterCustomerServer(grpcServer, params.CustomerServer)
 			reflection.Register(grpcServer)
 
 			go func() {

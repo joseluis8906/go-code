@@ -1,0 +1,22 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "apicustomer",
+    srcs = [
+        "customer.go",
+        "customer_asks_for_product.go",
+    ],
+    importpath = "github.com/joseluis8906/go-code/src/delivery/internal/app/apicustomer",
+    visibility = ["//src/delivery:__subpackages__"],
+    deps = [
+        "//protobuf/delivery:deliverypb",
+        "//protobuf/delivery/customer:customerpb",
+        "//src/delivery/internal/app/registry",
+        "//src/delivery/internal/customer",
+        "//src/delivery/internal/product",
+        "//src/delivery/internal/waiter",
+        "//src/pkg/cmp",
+        "//src/pkg/gglpb",
+        "@org_uber_go_fx//:fx",
+    ],
+)

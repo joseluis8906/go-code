@@ -1,4 +1,4 @@
-package app
+package apicustomer
 
 import (
 	"context"
@@ -11,19 +11,20 @@ import (
 	"github.com/joseluis8906/go-code/src/pkg/cmp"
 	"github.com/joseluis8906/go-code/src/pkg/gglpb"
 
-	pb "github.com/joseluis8906/go-code/protobuf/delivery/customerpb"
+	"github.com/joseluis8906/go-code/protobuf/delivery/customerpb"
+	"github.com/joseluis8906/go-code/protobuf/delivery/deliverypb"
 )
 
 const appName = "delivery"
 
 // CustomerAsksForAProduct returns a list of suggestions.
-func (s *CustomerService) AsksForAProduct(ctx context.Context, req *pb.AsksForAProductReq) (*pb.AsksForAProductRes, error) {
-	email, err := customer.NewEmail(req.GetCustomerEmail().GetValue())
+func (s *GRPCServer) AsksForAProduct(ctx context.Context, req *customerpb.AsksForAProductRequest) (*customerpb.AsksForAProductResponse, error) {
+	email, err := customer.NewEmail(req.GetCustomer().GetEmail().GetValue())
 	if err != nil {
 		return nil, fmt.Errorf("validating customer email: %w", err)
 	}
 
-	aProduct, err := product.NewName(req.GetProductName().GetValue())
+	aProduct, err := product.NewName(req.GetProduct().GetName().GetValue())
 	if err != nil {
 		return nil, fmt.Errorf("validating product name: %w", err)
 	}
@@ -49,9 +50,9 @@ func (s *CustomerService) AsksForAProduct(ctx context.Context, req *pb.AsksForAP
 
 	suggestions := theWaiter.Suggests(ctx)
 
-	products := make([]*pb.Product, len(suggestions))
+	products := make([]*deliverypb.Product, len(suggestions))
 	for i, suggestion := range suggestions {
-		product := pb.Product{
+		product := deliverypb.Product{
 			Ref:  gglpb.String(suggestion.Ref.String()),
 			Name: gglpb.String(suggestion.Name.String()),
 		}
@@ -59,8 +60,8 @@ func (s *CustomerService) AsksForAProduct(ctx context.Context, req *pb.AsksForAP
 		products[i] = &product
 	}
 
-	res := &pb.AsksForAProductRes{
-		Products: products,
+	res := &customerpb.AsksForAProductResponse{
+		// Products: products,
 	}
 
 	return res, nil

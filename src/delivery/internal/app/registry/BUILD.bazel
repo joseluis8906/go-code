@@ -9,5 +9,6 @@ go_library(
         "//src/delivery/internal/customer",
         "//src/delivery/internal/product",
         "//src/delivery/internal/waiter",
+        "@org_uber_go_fx//:fx",
     ],
 )

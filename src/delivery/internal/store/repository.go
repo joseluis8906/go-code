@@ -1,4 +1,4 @@
-package product
+package store
 
 import (
 	"context"
@@ -31,12 +31,20 @@ type (
 // NewCatalogRepository creates a new assistant repository instance.
 func NewRepository(deps Deps) (*Repository, error) {
 	db := "delivery"
-	collection := "products"
+	collection := "stores"
 	indexes := []mongo.IndexModel{
 		{
 			Keys: bson.D{
 				{
-					Key:   "Ref",
+					Key:   "Name",
+					Value: 1,
+				},
+				{
+					Key:   "City",
+					Value: 1,
+				},
+				{
+					Key:   "Address",
 					Value: 1,
 				},
 			},
@@ -45,7 +53,16 @@ func NewRepository(deps Deps) (*Repository, error) {
 		{
 			Keys: bson.D{
 				{
-					Key:   "Name",
+					Key:   "Products.Ref",
+					Value: 1,
+				},
+			},
+			Options: options.Index().SetUnique(true),
+		},
+		{
+			Keys: bson.D{
+				{
+					Key:   "Products.Name",
 					Value: 1,
 				},
 			},
@@ -71,8 +88,8 @@ func NewRepository(deps Deps) (*Repository, error) {
 }
 
 // Matchig returns the assistant for the given system.
-func (r *Repository) Matching(ctx context.Context, criteria cmp.Criteria) repository.Result[Product] {
-	var result []Product
+func (r *Repository) Matching(ctx context.Context, criteria cmp.Criteria) repository.Result[Store] {
+	var result []Store
 
 	opts := options.Find().
 		SetLimit(repository.Limit).
@@ -92,11 +109,11 @@ func (r *Repository) Matching(ctx context.Context, criteria cmp.Criteria) reposi
 
 	cursor, err := r.client.Database(r.db).Collection(r.collection).Find(ctx, query, opts)
 	if err != nil {
-		return repository.Error[Product](err)
+		return repository.Error[Store](err)
 	}
 
 	if err = cursor.All(ctx, &result); err != nil {
-		return repository.Error[Product](err)
+		return repository.Error[Store](err)
 	}
 
 	return repository.Data(result)

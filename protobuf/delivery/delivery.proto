@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package delivery.protobuf;
+
+import "google/protobuf/wrappers.proto";
+
+option go_package = "github.com/joseluis8906/go-code/protobuf/delivery/deliverypb";
+
+
+message Customer {
+  google.protobuf.StringValue email = 1;
+}
+
+message Store {
+  google.protobuf.StringValue name = 1;
+  repeated Product products = 2;
+}
+
+message Product {
+  google.protobuf.StringValue ref = 1;
+  google.protobuf.StringValue name = 2;
+  Money price = 3;
+}
+
+message Money {
+  google.protobuf.DoubleValue amount = 1;
+  google.protobuf.StringValue currency = 2;
+}

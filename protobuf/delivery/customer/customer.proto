@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package delivery.customer.protobuf;
+
+import "protobuf/delivery/delivery.proto";
+
+option go_package = "github.com/joseluis8906/go-code/protobuf/delivery/customerpb";
+
+service Customer {
+  rpc AsksForAProduct(AsksForAProductRequest) returns (AsksForAProductResponse);
+}
+
+message AsksForAProductRequest {
+  delivery.protobuf.Customer customer = 1;
+  delivery.protobuf.Product product = 2;
+}
+
+message AsksForAProductResponse {
+  repeated delivery.protobuf.Store stores = 1;
+}
