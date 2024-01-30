@@ -1,0 +1,13 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "registry",
+    srcs = ["registry.go"],
+    importpath = "github.com/joseluis8906/go-code/src/delivery/internal/app/registry",
+    visibility = ["//src/delivery:__subpackages__"],
+    deps = [
+        "//src/delivery/internal/customer",
+        "//src/delivery/internal/product",
+        "//src/delivery/internal/waiter",
+    ],
+)

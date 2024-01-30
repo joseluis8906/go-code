@@ -1,4 +1,4 @@
-package app
+package registry
 
 import (
 	"github.com/joseluis8906/go-code/src/delivery/internal/customer"
@@ -8,7 +8,7 @@ import (
 
 type (
 	// RepositoryRegistry represents the repository registry.
-	RepositoryRegistry struct {
+	Repository struct {
 		Waiters   *waiter.Repository
 		Customers *customer.Repository
 		Catalog   *product.Repository

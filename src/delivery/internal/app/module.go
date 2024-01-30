@@ -6,6 +6,7 @@ import (
 	"github.com/joseluis8906/go-code/src/delivery/internal/app/bus"
 	"github.com/joseluis8906/go-code/src/delivery/internal/app/config"
 	"github.com/joseluis8906/go-code/src/delivery/internal/app/logging"
+	"github.com/joseluis8906/go-code/src/delivery/internal/app/nosql"
 
 	"github.com/joseluis8906/go-code/src/delivery/internal/customer"
 	"github.com/joseluis8906/go-code/src/delivery/internal/product"
@@ -17,6 +18,7 @@ var Module = fx.Provide(
 	logging.New,
 	config.New,
 	bus.New,
+	nosql.New,
 
 	NewCustomerService,
 

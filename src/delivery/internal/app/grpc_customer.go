@@ -3,6 +3,8 @@ package app
 import (
 	"go.uber.org/fx"
 
+	"github.com/joseluis8906/go-code/src/delivery/internal/app/registry"
+
 	pb "github.com/joseluis8906/go-code/protobuf/delivery/customerpb"
 )
 
@@ -16,7 +18,7 @@ type (
 	CustomerService struct {
 		pb.UnimplementedCustomerServer
 
-		registry *RepositoryRegistry
+		registry *registry.Repository
 	}
 )
 
