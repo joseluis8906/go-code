@@ -122,10 +122,52 @@ go_repository(
 
 go_repository(
     name = "org_golang_google_grpc",
-    build_file_proto_mode = "disable",
+    build_file_proto_mode = "disable_global",
     importpath = "google.golang.org/grpc",
-    sum = "h1:f+PlOh7QV4iIJkPrx5NQ7qaNGFQ3OTse67yaDHfju4E=",
-    version = "v1.41.0",
+    sum = "h1:TOvOcuXn30kRao+gfcvsebNEa5iZIiLkisYEkf7R7o0=",
+    version = "v1.61.0",
+)
+
+go_repository(
+    name = "io_etcd_go_etcd_api_v3",
+    build_file_proto_mode = "disable_global",
+    importpath = "go.etcd.io/etcd/api/v3",
+    sum = "h1:szRajuUUbLyppkhs9K6BRtjY37l66XQQmw7oZRANE4k=",
+    version = "v3.5.10",
+)
+
+go_repository(
+    name = "com_github_googleapis_gax_go_v2",
+    #    This module is distributed with pre-generated .pb.go files, so we disable generation of
+    #    go_proto_library targets.
+    build_file_proto_mode = "disable_global",
+    importpath = "github.com/googleapis/gax-go/v2",
+    sum = "h1:A+gCJKdRfqXkr+BIRGtZLibNXf0m1f9E4HG56etFpas=",
+    version = "v2.12.0",
+)
+
+go_repository(
+    name = "com_github_gogo_protobuf",
+    build_file_proto_mode = "disable_global",
+    importpath = "github.com/gogo/protobuf",
+    sum = "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q=",
+    version = "v1.3.2",
+)
+
+go_repository(
+    name = "org_golang_google_api",
+    build_file_proto_mode = "disable_global",
+    importpath = "google.golang.org/api",
+    sum = "h1:N1AwGhielyKFaUqH07/ZSIQR3uNPcV7NVw0vj+j4iR4=",
+    version = "v0.153.0",
+)
+
+go_repository(
+    name = "com_google_cloud_go_firestore",
+    build_file_proto_mode = "disable_global",
+    importpath = "cloud.google.com/go/firestore",
+    sum = "h1:8aLcKnMPoldYU3YHgu4t2exrKhLQkqaXAGqT0ljrFVw=",
+    version = "v1.14.0",
 )
 
 load("//:deps.bzl", "go_dependencies")

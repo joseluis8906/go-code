@@ -9,22 +9,27 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"go.uber.org/fx"
 )
 
 // CatalogRepository represents the repository for the catalog.
-type Repository struct {
-	client     *mongo.Client
-	db         string
-	collection string
-}
+type (
+	Deps struct {
+		fx.In
 
-// NewCatalogRepository creates a new assistant repository instance.
-func NewRepository(ctx context.Context, uri string) (*Repository, error) {
-	conn, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
-	if err != nil {
-		return nil, err
+		Conn *mongo.Client
 	}
 
+	Repository struct {
+		client     *mongo.Client
+		db         string
+		collection string
+	}
+)
+
+// NewCatalogRepository creates a new assistant repository instance.
+func NewRepository(deps Deps) (*Repository, error) {
 	db := "delivery"
 	collection := "products"
 	indexes := []mongo.IndexModel{
@@ -37,17 +42,17 @@ func NewRepository(ctx context.Context, uri string) (*Repository, error) {
 		},
 	}
 
-	_, err = conn.Database(db).
+	_, err := deps.Conn.Database(db).
 		Collection(collection).
 		Indexes().
-		CreateMany(ctx, indexes)
+		CreateMany(context.TODO(), indexes)
 
 	if err != nil {
 		return nil, err
 	}
 
 	repo := &Repository{
-		client:     conn,
+		client:     deps.Conn,
 		db:         db,
 		collection: collection,
 	}

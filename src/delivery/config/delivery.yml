@@ -1,8 +1,9 @@
+---
 logging:
   path: /tmp/delivery.log
-
 grpc:
   port: 50052
-
 nats:
   url: "nats://infra:4222"
+mongodb:
+  uri: "mongodb://delivery:delivery@infra:27017/delivery"

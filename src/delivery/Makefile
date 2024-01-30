@@ -11,13 +11,6 @@ test:
 	@gazelle .
 	@bazel test //src/$(PROJECT_NAME)/...
 
-.PHONY: coverage
-coverage:
-	@echo $$NAME
-	# @gazelle .
-	# @bazel coverage //src/$(PROJECT_NAME)/$$PKG/...
-	# @genhtml --no-branch-coverage -output genhtml "$(bazel info output_path)/k8-fastbuild/testlogs/src/delivery/internal/customer/customer_test/coverage.dat"
-
 .PHONY: clean
 clean:
 	@bazel clean
@@ -29,7 +22,7 @@ build-bsd:
 
 .PHONY: run
 run:
-	@cd /$(BAZEL_BIN)/src/$(PROJECT_NAME)/cmd/$(PROJECT_NAME)/$(PROJECT_NAME)_/ && ./$(PROJECT_NAME)
+	@cd /$(BAZEL_BIN)/src/$(PROJECT_NAME)/cmd/$(PROJECT_NAME)/$(PROJECT_NAME)_/ && CONFIG_URL="http://infra:4001" ./$(PROJECT_NAME)
 
 .PHONY: debug
 debug:
