@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package dhps;
+package acme.protobuf;
 
 import "google/protobuf/wrappers.proto";
 
