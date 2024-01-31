@@ -1,4 +1,4 @@
-package apistoremanager
+package grpc
 
 import (
 	"context"
@@ -8,6 +8,6 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *GRPCServer) RegisterStore(ctx context.Context, req *storemanagerpb.RegisterStoreRequest) (*emptypb.Empty, error) {
+func (s *GRPCServer) RegistersAProduct(ctx context.Context, req *storemanagerpb.RegistersAProductRequest) (*emptypb.Empty, error) {
 	return nil, nil
 }

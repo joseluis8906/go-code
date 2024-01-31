@@ -6,7 +6,10 @@ proto_library(
     name = "customerpb_proto",
     srcs = ["customer.proto"],
     visibility = ["//visibility:public"],
-    deps = ["//protobuf/delivery:deliverypb_proto"],
+    deps = [
+        "//protobuf/delivery:deliverypb_proto",
+        "@com_google_protobuf//:empty_proto",
+    ],
 )
 
 go_proto_library(

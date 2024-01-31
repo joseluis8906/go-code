@@ -7,9 +7,10 @@ import (
 	"net"
 
 	"github.com/joseluis8906/go-code/protobuf/delivery/customerpb"
+	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
 
-	"github.com/joseluis8906/go-code/src/delivery/internal/app/apicustomer"
-	"github.com/joseluis8906/go-code/src/delivery/internal/app/apistoremanager"
+	customer "github.com/joseluis8906/go-code/src/delivery/internal/customer/grpc"
+	storemanager "github.com/joseluis8906/go-code/src/delivery/internal/storemanager/grpc"
 
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
@@ -24,8 +25,8 @@ type (
 		Config *viper.Viper
 		Logger *log.Logger
 
-		CustomerServer     *apicustomer.GRPCServer
-		StoreManagerServer *apistoremanager.GRPCServer
+		CustomerServer     *customer.GRPCServer
+		StoreManagerServer *storemanager.GRPCServer
 	}
 )
 
@@ -40,6 +41,8 @@ func NewGRPCServer(lc fx.Lifecycle, params Params) *grpc.Server {
 			}
 
 			customerpb.RegisterCustomerServer(grpcServer, params.CustomerServer)
+			storemanagerpb.RegisterStoreManagerServer(grpcServer, params.StoreManagerServer)
+
 			reflection.Register(grpcServer)
 
 			go func() {

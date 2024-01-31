@@ -1,4 +1,4 @@
-package apicustomer
+package grpc
 
 import (
 	"context"

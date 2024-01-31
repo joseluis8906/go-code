@@ -7,19 +7,23 @@ import (
 	"github.com/joseluis8906/go-code/src/delivery/internal/product"
 
 	"github.com/joseluis8906/go-code/src/pkg/cmp"
+	"github.com/joseluis8906/go-code/src/pkg/repository"
 )
 
 type (
+	Catalog interface {
+		Matching(ctx context.Context, criteria cmp.Criteria) repository.Result[product.Product]
+	}
+
 	// Waiter is an extended delivery waiter.
 	Waiter struct {
-		catalog  *product.Repository
+		catalog  Catalog
 		products []product.Product
 	}
 )
 
-func (w *Waiter) Using(catalog *product.Repository) *Waiter {
+func (w *Waiter) Using(catalog Catalog) *Waiter {
 	w.catalog = catalog
-
 	return w
 }
 
@@ -35,7 +39,6 @@ func (w *Waiter) LooksForAProduct(ctx context.Context, aProduct fmt.Stringer) er
 	}
 
 	w.products = result
-
 	return nil
 }
 

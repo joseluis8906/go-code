@@ -4,11 +4,11 @@ load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 proto_library(
     name = "waiterpb_proto",
-    srcs = ["waiter.proto"],
+    srcs = ["courier.proto"],
     visibility = ["//visibility:public"],
     deps = [
         "//protobuf/delivery:deliverypb_proto",
-        "@com_google_protobuf//:wrappers_proto",
+        "@com_google_protobuf//:empty_proto",
     ],
 )
 

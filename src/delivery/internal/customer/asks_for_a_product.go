@@ -21,7 +21,6 @@ type (
 
 func (a *AsksForAProduct) To(waiter Waiter) *AsksForAProduct {
 	a.waiter = waiter
-
 	return a
 }
 

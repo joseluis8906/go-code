@@ -1,12 +1,17 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "apicustomer",
+    name = "grpc",
     srcs = [
-        "customer.go",
-        "customer_asks_for_product.go",
+        "asks_for_active_order.go",
+        "asks_for_product.go",
+        "asks_to_cancel_order.go",
+        "asks_to_prepare_order.go",
+        "chooses_a_product.go",
+        "confirms_order_delivered.go",
+        "server.go",
     ],
-    importpath = "github.com/joseluis8906/go-code/src/delivery/internal/app/apicustomer",
+    importpath = "github.com/joseluis8906/go-code/src/delivery/internal/customer/grpc",
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
         "//protobuf/delivery:deliverypb",

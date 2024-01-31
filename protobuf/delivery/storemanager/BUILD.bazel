@@ -4,7 +4,7 @@ load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 proto_library(
     name = "storemanagerpb_proto",
-    srcs = ["store.proto"],
+    srcs = ["storemanager.proto"],
     visibility = ["//visibility:public"],
     deps = [
         "//protobuf/delivery:deliverypb_proto",

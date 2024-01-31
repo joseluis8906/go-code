@@ -4,6 +4,11 @@ go_library(
     name = "customer",
     srcs = [
         "asks_for_a_product.go",
+        "asks_for_active_order.go",
+        "asks_to_cancel_order.go",
+        "asks_to_prepare_order.go",
+        "chooses_a_product.go",
+        "confirms_order_delivered.go",
         "customer.go",
         "fields.go",
         "repository.go",

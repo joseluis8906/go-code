@@ -1,0 +1,13 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "storemanager",
+    srcs = [
+        "registers_a_product.go",
+        "registers_a_store.go",
+        "reports_order_is_ready.go",
+        "reports_order_is_taken.go",
+    ],
+    importpath = "github.com/joseluis8906/go-code/src/delivery/internal/storemanager",
+    visibility = ["//src/delivery:__subpackages__"],
+)

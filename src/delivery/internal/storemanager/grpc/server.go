@@ -1,10 +1,10 @@
-package apicustomer
+package grpc
 
 import (
 	"github.com/joseluis8906/go-code/src/delivery/internal/app/registry"
 	"go.uber.org/fx"
 
-	"github.com/joseluis8906/go-code/protobuf/delivery/customerpb"
+	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
 )
 
 type (
@@ -16,7 +16,7 @@ type (
 
 	// DeliveryService represents a delivery service.
 	GRPCServer struct {
-		customerpb.UnimplementedCustomerServer
+		storemanagerpb.UnimplementedStoreManagerServer
 
 		registry *registry.Repository
 	}

@@ -34,7 +34,12 @@ func NewRepository(deps Deps) (*Repository, error) {
 	collection := "customers"
 	indexes := []mongo.IndexModel{
 		{
-			Keys:    bson.D{{"Email", 1}},
+			Keys: bson.D{
+				{
+					Key:   "Email",
+					Value: 1,
+				},
+			},
 			Options: options.Index().SetUnique(true),
 		},
 	}

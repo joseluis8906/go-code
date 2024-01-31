@@ -3,17 +3,40 @@ syntax = "proto3";
 package delivery.protobuf;
 
 import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/joseluis8906/go-code/protobuf/delivery/deliverypb";
 
+message ID {
+  google.protobuf.StringValue type = 1;
+  google.protobuf.StringValue number = 2;
+}
+
+message Money {
+  google.protobuf.DoubleValue amount = 1;
+  google.protobuf.StringValue currency = 2;
+}
 
 message Customer {
   google.protobuf.StringValue email = 1;
+  google.protobuf.StringValue name = 2;
+  google.protobuf.StringValue city = 3;
+  google.protobuf.StringValue address = 4;
+}
+
+message Courier {
+  ID id = 5;
+  google.protobuf.StringValue email = 1;
+  google.protobuf.StringValue name = 2;
+  google.protobuf.StringValue city = 3;
+  google.protobuf.StringValue address = 4;
 }
 
 message Store {
   google.protobuf.StringValue name = 1;
-  repeated Product products = 2;
+  google.protobuf.StringValue city = 2;
+  google.protobuf.StringValue address = 3;
+  repeated Product products = 4;
 }
 
 message Product {
@@ -22,7 +45,9 @@ message Product {
   Money price = 3;
 }
 
-message Money {
-  google.protobuf.DoubleValue amount = 1;
-  google.protobuf.StringValue currency = 2;
+message Order {
+  google.protobuf.StringValue code = 1;
+  google.protobuf.Timestamp date = 2;
+  Customer customer = 3;
+  Store store = 4;
 }

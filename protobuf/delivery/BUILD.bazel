@@ -6,7 +6,10 @@ proto_library(
     name = "deliverypb_proto",
     srcs = ["delivery.proto"],
     visibility = ["//visibility:public"],
-    deps = ["@com_google_protobuf//:wrappers_proto"],
+    deps = [
+        "@com_google_protobuf//:timestamp_proto",
+        "@com_google_protobuf//:wrappers_proto",
+    ],
 )
 
 go_proto_library(

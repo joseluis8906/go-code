@@ -1,0 +1,13 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "courier",
+    srcs = [
+        "asks_to_release_the_order.go",
+        "courier.go",
+        "reports_order_delivered.go",
+        "reports_order_taken.go",
+    ],
+    importpath = "github.com/joseluis8906/go-code/src/delivery/internal/courier",
+    visibility = ["//src/delivery:__subpackages__"],
+)
