@@ -24,6 +24,6 @@ go_test(
     ],
     deps = [
         ":algorithms",
-        "@com_github_stretchr_testify//assert",
+        "//src/pkg/cmp",
     ],
 )

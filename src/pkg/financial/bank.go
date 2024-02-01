@@ -1,6 +1,7 @@
 package financial
 
 import (
+	"errors"
 	"math"
 )
 
@@ -13,8 +14,8 @@ type (
 
 	// Pair represents a pair of currencies.
 	Pair struct {
-		from string
-		to   string
+		from Currency
+		to   Currency
 	}
 )
 
@@ -32,23 +33,23 @@ func NewBank() Bank {
 //	bank := NewBank()
 //	bank.AddRate("CHF", "USD", 2)
 //	result := bank.Reduce(Franc(2), "USD") // result is Dollar(1)
-func (b Bank) Reduce(fromCurrency Money, toCurrency string) Money {
-	if fromCurrency.Currency() == toCurrency {
-		return fromCurrency
+func (b Bank) Reduce(from Money, to Currency) (Money, error) {
+	if from.Currency() == to {
+		return from, nil
 	}
 
-	pair := Pair{fromCurrency.Currency(), toCurrency}
+	pair := Pair{from.Currency(), to}
 	rate, ok := b.rates[pair]
 
 	if !ok {
-		panic("rate not found")
+		return from, errors.New("rate not found")
 	}
 
-	return NewMoney(int(math.Round(float64(fromCurrency.Amount())*rate)), toCurrency)
+	return NewMoney(int(math.Round(float64(from.Amount())*rate)), to), nil
 }
 
 // AddRate adds a rate between two currencies.
-func (b *Bank) AddRate(from, to string, rate float64) {
+func (b *Bank) AddRate(from, to Currency, rate float64) {
 	pair := Pair{from, to}
 	b.rates[pair] = rate
 
@@ -58,7 +59,7 @@ func (b *Bank) AddRate(from, to string, rate float64) {
 
 // Rate returns the rate between two currencies. If the rate is not found, it panics.
 // Use RateOk to check if a rate exists.
-func (b Bank) Rate(from, to string) float64 {
+func (b Bank) Rate(from, to Currency) float64 {
 	pair := Pair{from, to}
 	rate, ok := b.rates[pair]
 	if !ok {

@@ -18,6 +18,6 @@ go_test(
     ],
     deps = [
         ":financial",
-        "@com_github_stretchr_testify//assert",
+        "//src/pkg/cmp",
     ],
 )

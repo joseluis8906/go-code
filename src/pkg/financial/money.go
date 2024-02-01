@@ -6,9 +6,9 @@ package financial
 
 const (
 	// USD is the currency code for US Dollars.
-	USD = "USD"
+	USD Currency = "USD"
 	// CHF is the currency code for Swiss Francs.
-	CHF = "CHF"
+	CHF Currency = "CHF"
 )
 
 type (
@@ -20,15 +20,17 @@ type (
 	//  ten := five.Times(2)
 	Money struct {
 		amount   int
-		currency string
+		currency Currency
 	}
+
+	Currency string
 )
 
 // NewMoney creates a new Money object.
 // It returns a Noop() if the currency is not supported.
 //
 //	five := New(5, "USD")
-func NewMoney(amount int, currency string) Money {
+func NewMoney(amount int, currency Currency) Money {
 	switch currency {
 	case USD, CHF:
 	default:
@@ -75,7 +77,7 @@ func (m Money) Equals(another Money) bool {
 //
 //	dollar := Dollar(5)
 //	dollar.Currency() // "USD"
-func (m Money) Currency() string {
+func (m Money) Currency() Currency {
 	return m.currency
 }
 

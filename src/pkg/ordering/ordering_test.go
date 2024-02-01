@@ -4,12 +4,34 @@ import (
 	"testing"
 
 	"github.com/joseluis8906/go-code/src/pkg/ordering"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestOrdering(t *testing.T) {
 	t.Parallel()
 
-	assert.Less(t, ordering.Less, ordering.Equal)
-	assert.Less(t, ordering.Equal, ordering.Greater)
+	testCases := map[string]struct {
+		left  ordering.Cmp
+		right ordering.Cmp
+	}{
+		"Less": {
+			left:  ordering.Less,
+			right: ordering.Equal,
+		},
+		"Equal": {
+			left:  ordering.Equal,
+			right: ordering.Greater,
+		},
+	}
+
+	for name, tc := range testCases {
+		tc := tc
+
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
+			if !(tc.left < tc.right) {
+				t.Errorf("left should be less than right")
+			}
+		})
+	}
 }

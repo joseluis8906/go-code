@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/joseluis8906/go-code/src/pkg/algorithms"
-	"github.com/stretchr/testify/assert"
+	"github.com/joseluis8906/go-code/src/pkg/cmp"
 )
 
 func TestMergeSort(t *testing.T) {
@@ -15,38 +15,39 @@ func TestMergeSort(t *testing.T) {
 
 	algorithms.MergeSort(got, 3, 10)
 
-	assert.Equal(t, want, got)
+	if !cmp.Equal(got, want) {
+		t.Errorf("MergeSort() = %v, want %v\n%v", got, want, cmp.Diff(want, got))
+	}
 }
 
 func BenchmarkMergeSort(b *testing.B) {
-	testCases := []struct {
+	testCases := map[string]struct {
 		name  string
 		input []int
 		p     int
 		r     int
 	}{
-		{
-			name:  "Small",
+		"Small": {
 			input: []int{9, 6, 2},
 			p:     0,
 			r:     2,
 		},
-		{
-			name:  "Middle",
+		"Middle": {
 			input: []int{10, 70, 20, 5, 33, 22},
 			p:     0,
 			r:     5,
 		},
-		{
-			name:  "Big",
+		"Big": {
 			input: []int{9, 8, 7, 6, 5, 4, 3, 2, 1},
 			p:     0,
 			r:     8,
 		},
 	}
 
-	for _, tc := range testCases {
-		b.Run(tc.name, func(b *testing.B) {
+	for name, tc := range testCases {
+		tc := tc
+
+		b.Run(name, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				algorithms.MergeSort(tc.input, tc.p, tc.r)
 			}

@@ -5,4 +5,5 @@ go_library(
     srcs = ["cmp.go"],
     importpath = "github.com/joseluis8906/go-code/src/pkg/cmp",
     visibility = ["//visibility:public"],
+    deps = ["@com_github_google_go_cmp//cmp"],
 )

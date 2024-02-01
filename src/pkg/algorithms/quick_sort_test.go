@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/joseluis8906/go-code/src/pkg/algorithms"
-	"github.com/stretchr/testify/assert"
+	"github.com/joseluis8906/go-code/src/pkg/cmp"
 )
 
 func TestQuickSort(t *testing.T) {
@@ -15,7 +15,9 @@ func TestQuickSort(t *testing.T) {
 
 	algorithms.QuickSort(got, 3, 10)
 
-	assert.Equal(t, want, got)
+	if !cmp.Equal(got, want) {
+		t.Errorf("QuickSort() = %v, want %v\n%v", got, want, cmp.Diff(want, got))
+	}
 }
 
 func BenchmarkQuickSort(b *testing.B) {

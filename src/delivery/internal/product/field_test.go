@@ -1,10 +1,9 @@
 package product
 
 import (
-	"fmt"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
+	"github.com/joseluis8906/go-code/src/pkg/cmp"
 )
 
 func TestName(t *testing.T) {
@@ -17,8 +16,7 @@ func TestName(t *testing.T) {
 		got, err := NewName(in)
 
 		if got != want || err != nil {
-			diff := fmt.Sprintf("diff:\n\t-want\n\t+got\n%v", cmp.Diff(want, got))
-			t.Errorf("NewName(%v) = %v, %v; want %v, nil\n%v", in, got, err, want, diff)
+			t.Errorf("NewName(%v) = %v, %v; want %v, nil\n%v", in, got, err, want, cmp.Diff(want, got))
 		}
 	})
 
@@ -31,8 +29,7 @@ func TestName(t *testing.T) {
 		got, err := NewName(in)
 
 		if got != want || err == nil {
-			diff := fmt.Sprintf("diff:\n\t-want\n\t+got\n%v", cmp.Diff(want, got))
-			t.Errorf("NewName(%v) = %v, %v; want %v, error\n%v", in, got, err, want, diff)
+			t.Errorf("NewName(%v) = %v, %v; want %v, error\n%v", in, got, err, want, cmp.Diff(want, got))
 		}
 	})
 }
@@ -47,8 +44,7 @@ func TestReference(t *testing.T) {
 		got, err := NewRef(in)
 
 		if got != want || err != nil {
-			diff := fmt.Sprintf("diff:\n\t-want\n\t+got\n%v", cmp.Diff(want, got))
-			t.Errorf("NewRef(%v) = %v, %v; want %v, nil\n%v", in, got, err, want, diff)
+			t.Errorf("NewRef(%v) = %v, %v; want %v, nil\n%v", in, got, err, want, cmp.Diff(want, got))
 		}
 	})
 
@@ -78,8 +74,7 @@ func TestReference(t *testing.T) {
 				got, err := NewRef(tc.in)
 
 				if got != tc.want || err == nil {
-					diff := fmt.Sprintf("diff:\n\t-want\n\t+got\n%v", cmp.Diff(tc.want, got))
-					t.Errorf("NewRef(%v) = %v, %v; want %v, error\n%v", tc.in, got, err, tc.want, diff)
+					t.Errorf("NewRef(%v) = %v, %v; want %v, error\n%v", tc.in, got, err, tc.want, cmp.Diff(tc.want, got))
 				}
 			})
 		}

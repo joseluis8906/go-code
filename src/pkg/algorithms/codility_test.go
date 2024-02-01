@@ -4,38 +4,35 @@ import (
 	"testing"
 
 	"github.com/joseluis8906/go-code/src/pkg/algorithms"
-	"github.com/stretchr/testify/assert"
+	"github.com/joseluis8906/go-code/src/pkg/cmp"
 )
 
 func TestSolution(t *testing.T) {
-	t.Parallel()
-
-	testCases := []struct {
-		name  string
-		input []int
-		want  int
+	testCases := map[string]struct {
+		in   []int
+		want int
 	}{
-		{
-			name:  "Five",
-			input: []int{1, 3, 6, 4, 1, 2},
-			want:  5,
+		"Five": {
+			in:   []int{1, 3, 6, 4, 1, 2},
+			want: 5,
 		},
-		{
-			name:  "Four",
-			input: []int{1, 2, 3},
-			want:  4,
+		"Four": {
+			in:   []int{1, 2, 3},
+			want: 4,
 		},
 	}
 
-	for _, tc := range testCases {
+	for name, tc := range testCases {
 		tc := tc
 
-		t.Run(tc.name, func(t *testing.T) {
+		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			got := algorithms.Solution(tc.input)
+			got := algorithms.Solution(tc.in)
 
-			assert.Equal(t, tc.want, got)
+			if tc.want != got {
+				t.Errorf("Solution(%v) = %v; want %v\n%v", tc.in, got, tc.want, cmp.Diff(tc.want, got))
+			}
 		})
 	}
 }

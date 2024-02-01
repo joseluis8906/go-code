@@ -3,8 +3,8 @@ package financial_test
 import (
 	"testing"
 
+	"github.com/joseluis8906/go-code/src/pkg/cmp"
 	"github.com/joseluis8906/go-code/src/pkg/financial"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestBank_Reduce(t *testing.T) {
@@ -13,9 +13,41 @@ func TestBank_Reduce(t *testing.T) {
 	centralBank := financial.NewBank()
 	centralBank.AddRate(financial.CHF, financial.USD, 0.5)
 
-	assert.Equal(t, financial.Dollar(1), centralBank.Reduce(financial.Franc(2), financial.USD))
-	assert.Equal(t, financial.Franc(10), centralBank.Reduce(financial.Dollar(5), financial.CHF))
-	assert.Equal(t, financial.Dollar(6), centralBank.Reduce(financial.Dollar(6), financial.USD))
+	testCases := map[string]struct {
+		from financial.Money
+		to   financial.Currency
+		want financial.Money
+	}{
+		"FrancToDollar": {
+			from: financial.Franc(2),
+			to:   financial.USD,
+			want: financial.Dollar(1),
+		},
+		"DollarToFranc": {
+			from: financial.Dollar(5),
+			to:   financial.CHF,
+			want: financial.Franc(10),
+		},
+		"DollarToDollar": {
+			from: financial.Dollar(6),
+			to:   financial.USD,
+			want: financial.Dollar(6),
+		},
+	}
+
+	for name, tc := range testCases {
+		tc := tc
+
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
+			got, err := centralBank.Reduce(tc.from, tc.to)
+
+			if err != nil || got != tc.want {
+				t.Errorf("bank.Reduce(%v, %s) = %v, %v; want %v, nil\n%v", tc.from, tc.to, got, err, tc.want, cmp.Diff(tc.want, got))
+			}
+		})
+	}
 }
 
 func TestBank_Rate(t *testing.T) {
@@ -24,7 +56,39 @@ func TestBank_Rate(t *testing.T) {
 	centralBank := financial.NewBank()
 	centralBank.AddRate(financial.CHF, financial.USD, 0.5)
 
-	assert.InEpsilon(t, 0.5, centralBank.Rate(financial.CHF, financial.USD), 0.1)
-	assert.InEpsilon(t, 2, centralBank.Rate(financial.USD, financial.CHF), 0.1)
-	assert.InEpsilon(t, 1, centralBank.Rate(financial.USD, financial.USD), 0.1)
+	testCases := map[string]struct {
+		from financial.Currency
+		to   financial.Currency
+		want float64
+	}{
+		"CHFToUSD": {
+			from: financial.CHF,
+			to:   financial.USD,
+			want: 0.5,
+		},
+		"USDToCHF": {
+			from: financial.USD,
+			to:   financial.CHF,
+			want: 2,
+		},
+		"USDToUSD": {
+			from: financial.USD,
+			to:   financial.USD,
+			want: 1,
+		},
+	}
+
+	for name, tc := range testCases {
+		tc := tc
+
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+
+			got := centralBank.Rate(tc.from, tc.to)
+
+			if got != tc.want {
+				t.Errorf("bank.Rate(%s, %s) = %f; want %f\n%v", tc.from, tc.to, got, tc.want, cmp.Diff(tc.want, got))
+			}
+		})
+	}
 }

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/joseluis8906/go-code/src/pkg/algorithms"
-	"github.com/stretchr/testify/assert"
+	"github.com/joseluis8906/go-code/src/pkg/cmp"
 )
 
 func TestInsertSort(t *testing.T) {
@@ -15,7 +15,10 @@ func TestInsertSort(t *testing.T) {
 
 	algorithms.InsertSort(got)
 
-	assert.Equal(t, want, got)
+	if cmp.Equal(got, want) {
+		t.Errorf("InsertSort(%v) = %v; want %v\n%v", got, want, got, cmp.Diff(want, got))
+	}
+
 }
 
 func BenchmarkInsertSort(b *testing.B) {

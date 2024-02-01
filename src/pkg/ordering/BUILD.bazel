@@ -10,8 +10,5 @@ go_library(
 go_test(
     name = "ordering_test",
     srcs = ["ordering_test.go"],
-    deps = [
-        ":ordering",
-        "@com_github_stretchr_testify//assert",
-    ],
+    deps = [":ordering"],
 )

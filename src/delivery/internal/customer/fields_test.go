@@ -1,10 +1,9 @@
 package customer
 
 import (
-	"fmt"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
+	"github.com/joseluis8906/go-code/src/pkg/cmp"
 )
 
 func TestEmail(t *testing.T) {
@@ -16,8 +15,7 @@ func TestEmail(t *testing.T) {
 
 		got, err := NewEmail(in)
 		if err != nil || want != got {
-			diff := fmt.Sprintf("diff:\n\t-want\n\t+got\n%v", cmp.Diff(want, got))
-			t.Errorf("NewEmail(%v) = %+v, %v; want %+v, nil\n%v", in, got, err, want, diff)
+			t.Errorf("NewEmail(%v) = %+v, %v; want %+v, nil\n%v", in, got, err, want, cmp.Diff(want, got))
 		}
 	})
 
@@ -51,8 +49,7 @@ func TestEmail(t *testing.T) {
 
 				got, err := NewEmail(tc.in)
 				if err == nil || got != tc.want {
-					diff := fmt.Sprintf("diff:\n\t-want\n\t+got\n%v", cmp.Diff(tc.want, got))
-					t.Errorf("NewEmail(%v) = %v, %v; want %v, %v\n%v", tc.in, got, err, tc.want, "error", diff)
+					t.Errorf("NewEmail(%v) = %v, %v; want %v, %v\n%v", tc.in, got, err, tc.want, "error", cmp.Diff(tc.want, got))
 				}
 			})
 		}

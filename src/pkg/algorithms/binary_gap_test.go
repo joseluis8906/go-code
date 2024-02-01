@@ -4,43 +4,39 @@ import (
 	"testing"
 
 	"github.com/joseluis8906/go-code/src/pkg/algorithms"
-	"github.com/stretchr/testify/assert"
+	"github.com/joseluis8906/go-code/src/pkg/cmp"
 )
 
 func TestBinaryGap(t *testing.T) {
-	t.Parallel()
-
-	testCases := []struct {
-		name  string
-		input int
-		want  int
+	testCases := map[string]struct {
+		in   int
+		want int
 	}{
-		{
-			name:  "One",
-			input: 2,
-			want:  1,
+		"One": {
+			in:   2,
+			want: 1,
 		},
-		{
-			name:  "ThirtyTwo",
-			input: 32,
-			want:  5,
+		"ThirtyTwo": {
+			in:   32,
+			want: 5,
 		},
-		{
-			name:  "ThrityTwo",
-			input: 64,
-			want:  6,
+		"ThrityTwo": {
+			in:   64,
+			want: 6,
 		},
 	}
 
-	for _, tc := range testCases {
+	for name, tc := range testCases {
 		tc := tc
 
-		t.Run(tc.name, func(t *testing.T) {
+		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			got := algorithms.BinaryGap(tc.input)
+			got := algorithms.BinaryGap(tc.in)
 
-			assert.Equal(t, tc.want, got)
+			if got != tc.want {
+				t.Errorf("BinaryGap(%d) = %d; want %d", tc.in, got, tc.want, cmp.Diff(tc.want, got))
+			}
 		})
 	}
 }
