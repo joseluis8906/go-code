@@ -22,17 +22,16 @@ type (
 	}
 )
 
-func (w *Waiter) Using(catalog Catalog) *Waiter {
+func (w *Waiter) TakesACatalog(catalog Catalog) {
 	w.catalog = catalog
-	return w
 }
 
-func (w *Waiter) LooksForAProduct(ctx context.Context, aProduct fmt.Stringer) error {
+func (w *Waiter) LooksForAProduct(ctx context.Context, productName product.Name) error {
 	if w.catalog == nil {
 		return fmt.Errorf("catalog is nil")
 	}
 
-	criteria := cmp.Contains(product.NameField, aProduct.String())
+	criteria := cmp.Contains(product.NameField, productName.Value)
 	result, err := w.catalog.Matching(ctx, criteria).ExpectMulti()
 	if err != nil {
 		return err

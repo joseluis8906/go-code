@@ -12,6 +12,7 @@ go_library(
     deps = [
         "//src/pkg/cmp",
         "//src/pkg/repository",
+        "//src/pkg/types",
         "@org_mongodb_go_mongo_driver//bson",
         "@org_mongodb_go_mongo_driver//mongo",
         "@org_mongodb_go_mongo_driver//mongo/options",
@@ -21,7 +22,7 @@ go_library(
 
 go_test(
     name = "product_test",
-    srcs = ["product_test.go"],
+    srcs = ["field_test.go"],
     embed = [":product"],
-    deps = ["@com_github_stretchr_testify//assert"],
+    deps = ["@com_github_google_go_cmp//cmp"],
 )

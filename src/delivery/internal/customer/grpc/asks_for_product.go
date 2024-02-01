@@ -24,12 +24,12 @@ func (s *GRPCServer) AsksForAProduct(ctx context.Context, req *customerpb.AsksFo
 		return nil, fmt.Errorf("validating customer email: %w", err)
 	}
 
-	aProduct, err := product.NewName(req.GetProduct().GetName().GetValue())
+	productName, err := product.NewName(req.GetProduct().GetName().GetValue())
 	if err != nil {
 		return nil, fmt.Errorf("validating product name: %w", err)
 	}
 
-	criteria := cmp.Equals(customer.EmailField, email.String())
+	criteria := cmp.Equals(customer.EmailField, email.Value)
 	theCustomer, err := s.registry.Customers.Matching(ctx, criteria).ExpectOne()
 	if err != nil {
 		return nil, fmt.Errorf("getting customer: %w", err)
@@ -41,9 +41,9 @@ func (s *GRPCServer) AsksForAProduct(ctx context.Context, req *customerpb.AsksFo
 		return nil, fmt.Errorf("getting waiter: %w", err)
 	}
 
-	err = theCustomer.AsksFor(aProduct).
-		To(theWaiter.Using(s.registry.Catalog)).
-		Do(ctx)
+	theWaiter.TakesACatalog(s.registry.Catalog)
+
+	err = theCustomer.AsksForAProduct(ctx, productName, &theWaiter)
 	if err != nil {
 		return nil, fmt.Errorf("asking for a product: %w", err)
 	}
@@ -52,12 +52,10 @@ func (s *GRPCServer) AsksForAProduct(ctx context.Context, req *customerpb.AsksFo
 
 	products := make([]*deliverypb.Product, len(suggestions))
 	for i, suggestion := range suggestions {
-		product := deliverypb.Product{
-			Ref:  gglpb.String(suggestion.Ref.String()),
-			Name: gglpb.String(suggestion.Name.String()),
+		products[i] = &deliverypb.Product{
+			Ref:  gglpb.String(suggestion.Ref.Value),
+			Name: gglpb.String(suggestion.Name.Value),
 		}
-
-		products[i] = &product
 	}
 
 	res := &customerpb.AsksForAProductResponse{

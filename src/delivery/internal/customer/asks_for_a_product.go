@@ -2,28 +2,16 @@ package customer
 
 import (
 	"context"
-	"fmt"
+
+	"github.com/joseluis8906/go-code/src/delivery/internal/product"
 )
 
 type (
-	AsksForAProduct struct {
-		product fmt.Stringer
-
-		waiter interface {
-			LooksForAProduct(ctx context.Context, product fmt.Stringer) error
-		}
-	}
-
 	Waiter interface {
-		LooksForAProduct(ctx context.Context, product fmt.Stringer) error
+		LooksForAProduct(ctx context.Context, productName product.Name) error
 	}
 )
 
-func (a *AsksForAProduct) To(waiter Waiter) *AsksForAProduct {
-	a.waiter = waiter
-	return a
-}
-
-func (a *AsksForAProduct) Do(ctx context.Context) error {
-	return a.waiter.LooksForAProduct(ctx, a.product)
+func (c *Customer) AsksForAProduct(ctx context.Context, productName product.Name, aWaiter Waiter) error {
+	return aWaiter.LooksForAProduct(ctx, productName)
 }

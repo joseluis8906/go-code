@@ -99,7 +99,7 @@ func (r *Repository) Save(ctx context.Context, aCustomer Customer) error {
 	filter := bson.D{
 		{
 			Key:   EmailField,
-			Value: aCustomer.Email.String(),
+			Value: aCustomer.Email.Value,
 		},
 	}
 
