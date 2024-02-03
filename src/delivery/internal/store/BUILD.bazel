@@ -1,10 +1,9 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "store",
     srcs = [
         "fields.go",
-        "manager.go",
         "repository.go",
         "store.go",
     ],
@@ -12,11 +11,22 @@ go_library(
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
         "//src/delivery/internal/product",
-        "//src/pkg/cmp",
         "//src/pkg/repository",
+        "//src/pkg/types",
         "@org_mongodb_go_mongo_driver//bson",
+        "@org_mongodb_go_mongo_driver//bson/bsontype",
         "@org_mongodb_go_mongo_driver//mongo",
         "@org_mongodb_go_mongo_driver//mongo/options",
         "@org_uber_go_fx//:fx",
+    ],
+)
+
+go_test(
+    name = "store_test",
+    srcs = ["fields_test.go"],
+    embed = [":store"],
+    deps = [
+        "//src/pkg/cmp",
+        "@org_mongodb_go_mongo_driver//bson",
     ],
 )

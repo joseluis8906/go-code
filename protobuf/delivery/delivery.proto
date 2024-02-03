@@ -13,7 +13,7 @@ message ID {
 }
 
 message Money {
-  google.protobuf.DoubleValue amount = 1;
+  google.protobuf.Int64Value amount = 1;
   google.protobuf.StringValue currency = 2;
 }
 
@@ -34,9 +34,10 @@ message Courier {
 
 message Store {
   google.protobuf.StringValue name = 1;
-  google.protobuf.StringValue city = 2;
-  google.protobuf.StringValue address = 3;
-  repeated Product products = 4;
+  google.protobuf.StringValue country = 2;
+  google.protobuf.StringValue city = 3;
+  google.protobuf.StringValue address = 4;
+  repeated Product products = 5;
 }
 
 message Product {

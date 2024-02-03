@@ -3,7 +3,6 @@ package customer
 import (
 	"context"
 
-	"github.com/joseluis8906/go-code/src/pkg/cmp"
 	"github.com/joseluis8906/go-code/src/pkg/repository"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -63,7 +62,7 @@ func NewRepository(deps Deps) (*Repository, error) {
 }
 
 // Matching returns the customer for the given email.
-func (r *Repository) Matching(ctx context.Context, criteria cmp.Criteria) repository.Result[Customer] {
+func (r *Repository) Get(ctx context.Context, criteria repository.Criteria) repository.Result[Customer] {
 	var result []Customer
 
 	opts := options.Find().
@@ -94,7 +93,7 @@ func (r *Repository) Matching(ctx context.Context, criteria cmp.Criteria) reposi
 	return repository.Data(result)
 }
 
-func (r *Repository) Save(ctx context.Context, aCustomer Customer) error {
+func (r *Repository) Add(ctx context.Context, aCustomer Customer) error {
 	opts := options.Update().SetUpsert(true)
 	filter := bson.D{
 		{

@@ -1,0 +1,22 @@
+method: StoreManager.RegistersAProduct
+metadata:
+  x-auth-email: john.doe@example.com
+request:
+  store:
+    name: Burger King Cabecera
+    products:
+      - ref: HAM-001
+        name: American Chess Burger
+        price: 
+          amount: 3
+          currency: USD
+      - ref: HDG-001
+        name: NY Hog Dog
+        price: 
+          amount: 1
+          currency: USD
+      - ref: HDG-002
+        name: Franch Hog Dog
+        price: 
+          amount: 2
+          currency: USD

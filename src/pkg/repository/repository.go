@@ -4,6 +4,8 @@ import "errors"
 
 const Limit = 10
 
+var ErrNoData = errors.New("no data found")
+
 func Page(page int64) int64 {
 	return int64(Limit * (page - 1))
 }
@@ -20,7 +22,7 @@ func (r Result[T]) ExpectOne() (T, error) {
 	}
 
 	if len(r.data) == 0 {
-		return defaultData, errors.New("no data found")
+		return defaultData, ErrNoData
 	}
 
 	if len(r.data) > 1 {
@@ -36,7 +38,7 @@ func (r Result[T]) ExpectMulti() ([]T, error) {
 	}
 
 	if len(r.data) == 0 {
-		return nil, errors.New("no data found")
+		return nil, ErrNoData
 	}
 
 	return r.data, nil

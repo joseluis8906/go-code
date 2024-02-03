@@ -1,0 +1,9 @@
+method: StoreManager.RegistersAStore
+metadata:
+  x-auth-email: john.doe@example.com
+request:
+  store:
+    name: Burger King Cabecera
+    country: Colombia
+    city: Bucaramanga
+    address: 'Cra 33 # 22 - 18'

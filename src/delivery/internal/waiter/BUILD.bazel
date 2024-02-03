@@ -2,20 +2,11 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "waiter",
-    srcs = [
-        "fields.go",
-        "repository.go",
-        "waiter.go",
-    ],
+    srcs = ["waiter.go"],
     importpath = "github.com/joseluis8906/go-code/src/delivery/internal/waiter",
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
         "//src/delivery/internal/product",
-        "//src/pkg/cmp",
         "//src/pkg/repository",
-        "@org_mongodb_go_mongo_driver//bson",
-        "@org_mongodb_go_mongo_driver//mongo",
-        "@org_mongodb_go_mongo_driver//mongo/options",
-        "@org_uber_go_fx//:fx",
     ],
 )

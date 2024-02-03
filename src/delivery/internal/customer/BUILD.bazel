@@ -17,7 +17,6 @@ go_library(
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
         "//src/delivery/internal/product",
-        "//src/pkg/cmp",
         "//src/pkg/repository",
         "@org_mongodb_go_mongo_driver//bson",
         "@org_mongodb_go_mongo_driver//mongo",

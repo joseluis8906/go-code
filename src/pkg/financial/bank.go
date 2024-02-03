@@ -45,7 +45,7 @@ func (b Bank) Reduce(from Money, to Currency) (Money, error) {
 		return from, errors.New("rate not found")
 	}
 
-	return NewMoney(int(math.Round(float64(from.Amount())*rate)), to), nil
+	return NewMoney(int64(math.Round(float64(from.Amount())*rate)), to)
 }
 
 // AddRate adds a rate between two currencies.

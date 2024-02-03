@@ -1,6 +1,8 @@
 package grpc
 
 import (
+	"log"
+
 	"github.com/joseluis8906/go-code/src/delivery/internal/app/registry"
 	"go.uber.org/fx"
 
@@ -11,6 +13,7 @@ type (
 	Deps struct {
 		fx.In
 
+		Logs     *log.Logger
 		Registry *registry.Repository
 	}
 
@@ -18,6 +21,7 @@ type (
 	GRPCServer struct {
 		storemanagerpb.UnimplementedStoreManagerServer
 
+		logs     *log.Logger
 		registry *registry.Repository
 	}
 )
@@ -25,6 +29,7 @@ type (
 // NewDeliveryService returns a new instance of DeliveryService.
 func NewGRPCServer(deps Deps) *GRPCServer {
 	return &GRPCServer{
+		logs:     deps.Logs,
 		registry: deps.Registry,
 	}
 }

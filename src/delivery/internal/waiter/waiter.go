@@ -6,33 +6,28 @@ import (
 
 	"github.com/joseluis8906/go-code/src/delivery/internal/product"
 
-	"github.com/joseluis8906/go-code/src/pkg/cmp"
 	"github.com/joseluis8906/go-code/src/pkg/repository"
 )
 
 type (
 	Catalog interface {
-		Matching(ctx context.Context, criteria cmp.Criteria) repository.Result[product.Product]
+		Get(ctx context.Context, criteria repository.Criteria) repository.Result[product.Product]
 	}
 
 	// Waiter is an extended delivery waiter.
 	Waiter struct {
-		catalog  Catalog
+		Catalog  Catalog
 		products []product.Product
 	}
 )
 
-func (w *Waiter) TakesACatalog(catalog Catalog) {
-	w.catalog = catalog
-}
-
 func (w *Waiter) LooksForAProduct(ctx context.Context, productName product.Name) error {
-	if w.catalog == nil {
+	if w.Catalog == nil {
 		return fmt.Errorf("catalog is nil")
 	}
 
-	criteria := cmp.Contains(product.NameField, productName.Value)
-	result, err := w.catalog.Matching(ctx, criteria).ExpectMulti()
+	criteria := repository.Contains("", productName.Value)
+	result, err := w.Catalog.Get(ctx, criteria).ExpectMulti()
 	if err != nil {
 		return err
 	}

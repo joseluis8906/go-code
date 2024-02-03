@@ -2,8 +2,9 @@ package store
 
 import (
 	"context"
+	"fmt"
+	"log"
 
-	"github.com/joseluis8906/go-code/src/pkg/cmp"
 	"github.com/joseluis8906/go-code/src/pkg/repository"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -19,9 +20,12 @@ type (
 		fx.In
 
 		Conn *mongo.Client
+		Logs *log.Logger
 	}
 
 	Repository struct {
+		logs *log.Logger
+
 		client     *mongo.Client
 		db         string
 		collection string
@@ -36,15 +40,7 @@ func NewRepository(deps Deps) (*Repository, error) {
 		{
 			Keys: bson.D{
 				{
-					Key:   "Name",
-					Value: 1,
-				},
-				{
-					Key:   "City",
-					Value: 1,
-				},
-				{
-					Key:   "Address",
+					Key:   NameField,
 					Value: 1,
 				},
 			},
@@ -53,7 +49,7 @@ func NewRepository(deps Deps) (*Repository, error) {
 		{
 			Keys: bson.D{
 				{
-					Key:   "Products.Ref",
+					Key:   ProductRefField,
 					Value: 1,
 				},
 			},
@@ -62,7 +58,7 @@ func NewRepository(deps Deps) (*Repository, error) {
 		{
 			Keys: bson.D{
 				{
-					Key:   "Products.Name",
+					Key:   ProductNameField,
 					Value: 1,
 				},
 			},
@@ -79,6 +75,7 @@ func NewRepository(deps Deps) (*Repository, error) {
 	}
 
 	repo := &Repository{
+		logs:       deps.Logs,
 		client:     deps.Conn,
 		db:         db,
 		collection: collection,
@@ -88,7 +85,7 @@ func NewRepository(deps Deps) (*Repository, error) {
 }
 
 // Matchig returns the assistant for the given system.
-func (r *Repository) Matching(ctx context.Context, criteria cmp.Criteria) repository.Result[Store] {
+func (r *Repository) Get(ctx context.Context, criteria repository.Criteria) repository.Result[Store] {
 	var result []Store
 
 	opts := options.Find().
@@ -109,12 +106,31 @@ func (r *Repository) Matching(ctx context.Context, criteria cmp.Criteria) reposi
 
 	cursor, err := r.client.Database(r.db).Collection(r.collection).Find(ctx, query, opts)
 	if err != nil {
-		return repository.Error[Store](err)
+		return repository.Error[Store](fmt.Errorf("searching in mongo: %w", err))
 	}
 
 	if err = cursor.All(ctx, &result); err != nil {
-		return repository.Error[Store](err)
+		return repository.Error[Store](fmt.Errorf("decoding from mongo cursor: %w", err))
 	}
 
 	return repository.Data(result)
+}
+
+func (r *Repository) Add(ctx context.Context, aStore Store) error {
+	filter := bson.D{
+		{
+			Key:   NameField,
+			Value: aStore.Name.Value,
+		},
+	}
+
+	err := r.client.Database(r.db).
+		Collection(r.collection).
+		FindOneAndReplace(ctx, filter, aStore, options.FindOneAndReplace().SetUpsert(true)).Err()
+
+	if err != nil {
+		return fmt.Errorf("finding and replacing in mongo: %w", err)
+	}
+
+	return nil
 }

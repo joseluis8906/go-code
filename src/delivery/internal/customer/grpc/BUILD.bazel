@@ -3,8 +3,8 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "grpc",
     srcs = [
+        "asks_for_a_product.go",
         "asks_for_active_order.go",
-        "asks_for_product.go",
         "asks_to_cancel_order.go",
         "asks_to_prepare_order.go",
         "chooses_a_product.go",
@@ -20,8 +20,8 @@ go_library(
         "//src/delivery/internal/customer",
         "//src/delivery/internal/product",
         "//src/delivery/internal/waiter",
-        "//src/pkg/cmp",
         "//src/pkg/gglpb",
+        "//src/pkg/repository",
         "@org_uber_go_fx//:fx",
     ],
 )

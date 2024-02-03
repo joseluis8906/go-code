@@ -7,7 +7,13 @@ go_library(
         "registers_a_store.go",
         "reports_order_is_ready.go",
         "reports_order_is_taken.go",
+        "storemanager.go",
     ],
     importpath = "github.com/joseluis8906/go-code/src/delivery/internal/storemanager",
     visibility = ["//src/delivery:__subpackages__"],
+    deps = [
+        "//src/delivery/internal/product",
+        "//src/delivery/internal/store",
+        "//src/pkg/repository",
+    ],
 )

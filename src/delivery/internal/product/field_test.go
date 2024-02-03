@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/joseluis8906/go-code/src/pkg/cmp"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func TestName(t *testing.T) {
@@ -77,6 +78,52 @@ func TestReference(t *testing.T) {
 					t.Errorf("NewRef(%v) = %v, %v; want %v, error\n%v", tc.in, got, err, tc.want, cmp.Diff(tc.want, got))
 				}
 			})
+		}
+	})
+}
+
+func TestPrice(t *testing.T) {
+	t.Run("MarshalBSON", func(t *testing.T) {
+		t.Parallel()
+
+		in := struct {
+			Amount   int
+			Currency string
+		}{
+			Amount:   1000,
+			Currency: "USD",
+		}
+
+		_, want, _ := bson.MarshalValue(in)
+		price, _ := NewPrice(in.Amount, in.Currency)
+
+		got, err := price.MarshalBSON()
+
+		if err != nil || !cmp.Equal(got, want) {
+			t.Errorf("Price.MarshalBSON() = %v, %v; want %v, nil\n%v", got, err, want, cmp.Diff(want, got))
+		}
+	})
+
+	t.Run("UnmarshalBSON", func(t *testing.T) {
+		t.Parallel()
+
+		in := struct {
+			Amount   int
+			Currency string
+		}{
+			Amount:   1000,
+			Currency: "USD",
+		}
+
+		_, data, _ := bson.MarshalValue(in)
+
+		want, _ := NewPrice(in.Amount, in.Currency)
+
+		var got Price
+		err := got.UnmarshalBSON(data)
+
+		if err == nil || got != want {
+			t.Errorf("Price.UnmarshalBSON(%v) = %v, %v; want %v, nil\n%v", data, got, err, want, cmp.Diff(want, got))
 		}
 	})
 }

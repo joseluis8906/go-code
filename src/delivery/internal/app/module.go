@@ -10,8 +10,7 @@ import (
 	"github.com/joseluis8906/go-code/src/delivery/internal/app/registry"
 
 	"github.com/joseluis8906/go-code/src/delivery/internal/customer"
-	"github.com/joseluis8906/go-code/src/delivery/internal/product"
-	"github.com/joseluis8906/go-code/src/delivery/internal/waiter"
+	"github.com/joseluis8906/go-code/src/delivery/internal/store"
 
 	grpccustomer "github.com/joseluis8906/go-code/src/delivery/internal/customer/grpc"
 	grpcstoremanager "github.com/joseluis8906/go-code/src/delivery/internal/storemanager/grpc"
@@ -24,9 +23,8 @@ var Module = fx.Provide(
 	bus.New,
 	nosql.New,
 
-	waiter.NewRepository,
 	customer.NewRepository,
-	product.NewRepository,
+	store.NewRepository,
 	registry.New,
 
 	grpccustomer.NewGRPCServer,

@@ -7,8 +7,7 @@ go_library(
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
         "//src/delivery/internal/customer",
-        "//src/delivery/internal/product",
-        "//src/delivery/internal/waiter",
+        "//src/delivery/internal/store",
         "@org_uber_go_fx//:fx",
     ],
 )

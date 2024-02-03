@@ -1,8 +1,7 @@
 syntax = "proto3";
 
-package delivery.storemager.protobuf;
+package delivery.storemanager.protobuf;
 
-import "google/protobuf/wrappers.proto";
 import "google/protobuf/empty.proto";
 import "protobuf/delivery/delivery.proto";
 
@@ -16,13 +15,11 @@ service StoreManager {
 }
 
 message RegistersAStoreRequest {
-  google.protobuf.StringValue name = 1;
-  google.protobuf.StringValue city = 2;
-  google.protobuf.StringValue address = 3;
+  delivery.protobuf.Store store = 1;
 }
 
 message RegistersAProductRequest {
-  delivery.protobuf.Product product = 1;
+  delivery.protobuf.Store store = 1;
 }
 
 message ReportsOrderReceivedRequest {

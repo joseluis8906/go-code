@@ -11,7 +11,7 @@ func TestMoney_Multiplication(t *testing.T) {
 	five := financial.Dollar(5)
 
 	testCases := map[string]struct {
-		in   int
+		in   int64
 		want financial.Money
 	}{
 		"5*2": {in: 2, want: financial.Dollar(10)},
@@ -26,7 +26,7 @@ func TestMoney_Multiplication(t *testing.T) {
 
 			got := five.Times(tc.in)
 			if got != tc.want {
-				t.Errorf("[5 Dollar]money.Times(%d) = %v; want %v\n%v", tc.in, got, tc.want, cmp.Diff(tc.want))
+				t.Errorf("[5 Dollar]money.Times(%d) = %v; want %v\n%v", tc.in, got, tc.want, cmp.Diff(tc.want, got))
 			}
 		})
 	}
@@ -34,20 +34,24 @@ func TestMoney_Multiplication(t *testing.T) {
 
 func TestMoney_Equality(t *testing.T) {
 	testcases := map[string]struct {
-		in   financial.Money
-		want bool
+		left  financial.Money
+		right financial.Money
+		want  bool
 	}{
 		"5 Dollar == 5 Dollar": {
-			in:   financial.Dollar(5),
-			want: true,
+			left:  financial.Dollar(5),
+			right: financial.Dollar(5),
+			want:  true,
 		},
 		"5 Dollar != 6 Dollar": {
-			in:   financial.Dollar(6),
-			want: false,
+			left:  financial.Dollar(5),
+			right: financial.Dollar(6),
+			want:  false,
 		},
 		"5 Franc == 5 Franc": {
-			in:   financial.Franc(5),
-			want: true,
+			left:  financial.Franc(5),
+			right: financial.Franc(5),
+			want:  true,
 		},
 	}
 
@@ -57,10 +61,10 @@ func TestMoney_Equality(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			got := tc.in.Equals(tc.in)
+			got := tc.left.Equals(tc.right)
 
 			if got != tc.want {
-				t.Errorf("money.Equals(%v) = %v; want %v\n%v", tc.in, got, tc.want, cmp.Diff(tc.want, got))
+				t.Errorf("money.Equals(%v) = %v; want %v\n%v", tc.left, got, tc.want, cmp.Diff(tc.want, got))
 			}
 		})
 	}
@@ -79,7 +83,7 @@ func TestMoney_Plus(t *testing.T) {
 		},
 		"5 Dollar + 5 Franc": {
 			in:   financial.Franc(5),
-			want: financial.Dollar(0),
+			want: financial.Money{},
 		},
 	}
 
@@ -98,34 +102,29 @@ func TestMoney_Plus(t *testing.T) {
 }
 
 func TestMoney_ValidCurrencies(t *testing.T) {
-	testCases := map[string]struct {
-		amount   int
-		currency financial.Currency
-		want     financial.Money
-	}{
-		"5 Dollar": {
-			amount:   5,
-			currency: financial.USD,
-			want:     financial.Dollar(5),
-		},
-		"Zero": {
-			amount:   5,
-			currency: financial.Currency("UNKNOWN"),
-			want:     financial.Money{},
-		},
-	}
+	t.Run("Valid currencies", func(t *testing.T) {
+		amount := int64(5)
+		currency := financial.USD
 
-	for name, tc := range testCases {
-		tc := tc
+		want := financial.Dollar(amount)
 
-		t.Run(name, func(t *testing.T) {
-			t.Parallel()
+		got, err := financial.NewMoney(amount, currency)
 
-			got := financial.NewMoney(tc.amount, tc.currency)
+		if err != nil || got != want {
+			t.Errorf("money.NewMoney(%d, %s) = %v %v; want %v nil\n%v", amount, currency, got, err, want, cmp.Diff(want, got))
+		}
+	})
 
-			if got != tc.want {
-				t.Errorf("money.NewMoney(%d, %s) = %v; want %v\n%v", tc.amount, tc.currency, got, tc.want, cmp.Diff(tc.want, got))
-			}
-		})
-	}
+	t.Run("Invalid currencies", func(t *testing.T) {
+		amount := int64(5)
+		currency := financial.Currency("EUR")
+
+		want := financial.Money{}
+
+		got, err := financial.NewMoney(amount, currency)
+
+		if err == nil || got != want {
+			t.Errorf("money.NewMoney(%d, %s) = %v %v; want %v error\n%v", amount, currency, got, err, want, cmp.Diff(want, got))
+		}
+	})
 }

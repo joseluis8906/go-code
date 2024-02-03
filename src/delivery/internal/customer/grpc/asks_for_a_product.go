@@ -8,8 +8,8 @@ import (
 	"github.com/joseluis8906/go-code/src/delivery/internal/product"
 	"github.com/joseluis8906/go-code/src/delivery/internal/waiter"
 
-	"github.com/joseluis8906/go-code/src/pkg/cmp"
 	"github.com/joseluis8906/go-code/src/pkg/gglpb"
+	"github.com/joseluis8906/go-code/src/pkg/repository"
 
 	"github.com/joseluis8906/go-code/protobuf/delivery/customerpb"
 	"github.com/joseluis8906/go-code/protobuf/delivery/deliverypb"
@@ -29,19 +29,15 @@ func (s *GRPCServer) AsksForAProduct(ctx context.Context, req *customerpb.AsksFo
 		return nil, fmt.Errorf("validating product name: %w", err)
 	}
 
-	criteria := cmp.Equals(customer.EmailField, email.Value)
-	theCustomer, err := s.registry.Customers.Matching(ctx, criteria).ExpectOne()
+	criteria := repository.Equals(customer.EmailField, email.Value)
+	theCustomer, err := s.registry.Customers.Get(ctx, criteria).ExpectOne()
 	if err != nil {
 		return nil, fmt.Errorf("getting customer: %w", err)
 	}
 
-	criteria = cmp.Equals(waiter.NameField, appName)
-	theWaiter, err := s.registry.Waiters.Matching(ctx, criteria).ExpectOne()
-	if err != nil {
-		return nil, fmt.Errorf("getting waiter: %w", err)
+	theWaiter := waiter.Waiter{
+		// Catalog: s.registry.Catalog,
 	}
-
-	theWaiter.TakesACatalog(s.registry.Catalog)
 
 	err = theCustomer.AsksForAProduct(ctx, productName, &theWaiter)
 	if err != nil {

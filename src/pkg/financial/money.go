@@ -1,5 +1,7 @@
 package financial
 
+import "errors"
+
 // Money is a value object that represents a certain amount of money in a certain currency.
 // It is immutable. It can be added, subtracted, multiplied and compared.
 // It can be created using the Dollar() and Franc() functions.
@@ -19,7 +21,7 @@ type (
 	//  five := Dollar(5)
 	//  ten := five.Times(2)
 	Money struct {
-		amount   int
+		amount   int64
 		currency Currency
 	}
 
@@ -30,14 +32,14 @@ type (
 // It returns a Noop() if the currency is not supported.
 //
 //	five := New(5, "USD")
-func NewMoney(amount int, currency Currency) Money {
+func NewMoney(amount int64, currency Currency) (Money, error) {
 	switch currency {
 	case USD, CHF:
 	default:
-		return Noop()
+		return Noop(), errors.New("unsupported currency")
 	}
 
-	return Money{amount, currency}
+	return Money{amount, currency}, nil
 }
 
 // Noop returns a Money object with a zero amount and an empty currency.
@@ -52,7 +54,7 @@ func Noop() Money {
 // It can be used like this:
 //
 //	five := Dollar(5)
-func Dollar(amount int) Money {
+func Dollar(amount int64) Money {
 	return Money{amount, "USD"}
 }
 
@@ -60,7 +62,7 @@ func Dollar(amount int) Money {
 // It can be used like this:
 //
 //	five := Franc(5)
-func Franc(amount int) Money {
+func Franc(amount int64) Money {
 	return Money{amount, "CHF"}
 }
 
@@ -85,7 +87,7 @@ func (m Money) Currency() Currency {
 //
 //	five := Dollar(5)
 //	five.Amount() // 5
-func (m Money) Amount() int {
+func (m Money) Amount() int64 {
 	return m.amount
 }
 
@@ -94,7 +96,7 @@ func (m Money) Amount() int {
 //
 //	five := Dollar(5)
 //	ten := five.Times(2) // ten is a Dollar(10)
-func (m Money) Times(multiplier int) Money {
+func (m Money) Times(multiplier int64) Money {
 	return Money{m.amount * multiplier, m.currency}
 }
 

@@ -5,18 +5,14 @@ go_library(
     srcs = [
         "fields.go",
         "product.go",
-        "repository.go",
     ],
     importpath = "github.com/joseluis8906/go-code/src/delivery/internal/product",
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
-        "//src/pkg/cmp",
-        "//src/pkg/repository",
+        "//src/pkg/financial",
         "//src/pkg/types",
         "@org_mongodb_go_mongo_driver//bson",
-        "@org_mongodb_go_mongo_driver//mongo",
-        "@org_mongodb_go_mongo_driver//mongo/options",
-        "@org_uber_go_fx//:fx",
+        "@org_mongodb_go_mongo_driver//bson/bsontype",
     ],
 )
 
@@ -24,5 +20,8 @@ go_test(
     name = "product_test",
     srcs = ["field_test.go"],
     embed = [":product"],
-    deps = ["//src/pkg/cmp"],
+    deps = [
+        "//src/pkg/cmp",
+        "@org_mongodb_go_mongo_driver//bson",
+    ],
 )
