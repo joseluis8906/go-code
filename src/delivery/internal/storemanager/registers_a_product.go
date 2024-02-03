@@ -16,7 +16,7 @@ func (sm *StoreManager) RegistersAProduct(ctx context.Context, form StoreForm) e
 		return fmt.Errorf("getting store: %w", err)
 	}
 
-	productsSet := map[string]product.Product{}
+	productsSet := make(map[string]product.Product, len(aStore.Products))
 	for _, p := range aStore.Products {
 		productsSet[p.Ref.Value] = p
 	}
@@ -27,6 +27,7 @@ func (sm *StoreManager) RegistersAProduct(ctx context.Context, form StoreForm) e
 			Name(pf.Name).
 			Price(pf.Price.Amount, pf.Price.Currency).
 			Do(ctx)
+
 		if err != nil {
 			return fmt.Errorf("creating new product: %w", err)
 		}

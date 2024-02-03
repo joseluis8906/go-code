@@ -9,6 +9,8 @@ import (
 	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
 )
 
+const authEmail string = "x-auth-email"
+
 type (
 	Deps struct {
 		fx.In

@@ -32,7 +32,7 @@ func (r Result[T]) ExpectOne() (T, error) {
 	return r.data[0], nil
 }
 
-func (r Result[T]) ExpectMulti() ([]T, error) {
+func (r Result[T]) ExpectMany() ([]T, error) {
 	if r.err != nil {
 		return nil, r.err
 	}

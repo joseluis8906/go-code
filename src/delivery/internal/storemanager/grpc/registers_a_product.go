@@ -3,28 +3,21 @@ package grpc
 import (
 	"context"
 
-	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
 	"github.com/joseluis8906/go-code/src/delivery/internal/storemanager"
+	"github.com/joseluis8906/go-code/src/pkg/grpc"
 
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
+	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 func (s *GRPCServer) RegistersAProduct(ctx context.Context, req *storemanagerpb.RegistersAProductRequest) (*emptypb.Empty, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return nil, status.Errorf(codes.DataLoss, "failed to get metadata")
-	}
-
-	email := md.Get("x-auth-email")
-	if len(email) == 0 {
-		return nil, status.Errorf(codes.Unauthenticated, "missing x-auth-email header")
+	email, err := grpc.Header(ctx, authEmail).ExpectOne()
+	if err != nil {
+		return nil, err
 	}
 
 	theStoremanager := storemanager.StoreManager{
-		Email:  email[0],
+		Email:  email,
 		Stores: s.registry.Stores,
 	}
 

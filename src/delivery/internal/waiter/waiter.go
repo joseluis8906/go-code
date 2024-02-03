@@ -27,7 +27,7 @@ func (w *Waiter) LooksForAProduct(ctx context.Context, productName product.Name)
 	}
 
 	criteria := repository.Contains("", productName.Value)
-	result, err := w.Catalog.Get(ctx, criteria).ExpectMulti()
+	result, err := w.Catalog.Get(ctx, criteria).ExpectMany()
 	if err != nil {
 		return err
 	}
