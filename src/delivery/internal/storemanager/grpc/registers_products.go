@@ -10,7 +10,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *GRPCServer) RegistersAProduct(ctx context.Context, req *storemanagerpb.RegistersAProductRequest) (*emptypb.Empty, error) {
+func (s *GRPCServer) RegistersProducts(ctx context.Context, req *storemanagerpb.RegistersProductsRequest) (*emptypb.Empty, error) {
 	email, err := grpc.Header(ctx, authEmail).ExpectOne()
 	if err != nil {
 		return nil, err
@@ -38,5 +38,5 @@ func (s *GRPCServer) RegistersAProduct(ctx context.Context, req *storemanagerpb.
 		Products: pform,
 	}
 
-	return &emptypb.Empty{}, theStoremanager.RegistersAProduct(ctx, form)
+	return &emptypb.Empty{}, theStoremanager.RegistersProducts(ctx, form)
 }

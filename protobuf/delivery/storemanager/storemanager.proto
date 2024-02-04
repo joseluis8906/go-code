@@ -9,7 +9,7 @@ option go_package = "github.com/joseluis8906/go-code/protobuf/delivery/storemana
 
 service StoreManager {
   rpc RegistersAStore(RegistersAStoreRequest) returns (google.protobuf.Empty);
-  rpc RegistersAProduct(RegistersAProductRequest) returns (google.protobuf.Empty);
+  rpc RegistersProducts(RegistersProductsRequest) returns (google.protobuf.Empty);
   rpc ReportsOrderReceived(ReportsOrderReceivedRequest) returns (google.protobuf.Empty);
   rpc ReportsOrderIsReady(ReportsOrderIsReadyRequest) returns (google.protobuf.Empty);
 }
@@ -18,7 +18,7 @@ message RegistersAStoreRequest {
   delivery.protobuf.Store store = 1;
 }
 
-message RegistersAProductRequest {
+message RegistersProductsRequest {
   delivery.protobuf.Store store = 1;
 }
 

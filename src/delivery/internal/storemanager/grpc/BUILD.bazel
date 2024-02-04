@@ -3,8 +3,8 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "grpc",
     srcs = [
-        "registers_a_product.go",
         "registers_a_store.go",
+        "registers_products.go",
         "reports_order_is_ready.go",
         "reports_order_is_taken.go",
         "server.go",

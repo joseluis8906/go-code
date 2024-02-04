@@ -9,7 +9,10 @@ import (
 	"github.com/joseluis8906/go-code/src/pkg/repository"
 )
 
-func (sm *StoreManager) RegistersAProduct(ctx context.Context, form StoreForm) error {
+// RegistersProducts adds new products to a store.
+// If the store does not exist, it will return an error.
+// If products already exist, it will update the existing products with the new data.
+func (sm *StoreManager) RegistersProducts(ctx context.Context, form StoreForm) error {
 	criteria := repository.Contains(store.NameField, form.Name)
 	aStore, err := sm.Stores.Get(ctx, criteria).ExpectOne()
 	if err != nil {
