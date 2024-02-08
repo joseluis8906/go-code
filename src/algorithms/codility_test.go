@@ -3,7 +3,7 @@ package algorithms_test
 import (
 	"testing"
 
-	"github.com/joseluis8906/go-code/src/pkg/algorithms"
+	"github.com/joseluis8906/go-code/src/algorithms"
 	"github.com/joseluis8906/go-code/src/pkg/cmp"
 )
 

@@ -6,10 +6,11 @@ go_library(
         "binary_gap.go",
         "codility.go",
         "insert_sort.go",
+        "longest_palindromic_substr.go",
         "merge_sort.go",
         "quick_sort.go",
     ],
-    importpath = "github.com/joseluis8906/go-code/src/pkg/algorithms",
+    importpath = "github.com/joseluis8906/go-code/src/algorithms",
     visibility = ["//visibility:public"],
 )
 
@@ -19,11 +20,10 @@ go_test(
         "binary_gap_test.go",
         "codility_test.go",
         "insert_sort_test.go",
+        "longest_palindromic_substr_test.go",
         "merge_sort_test.go",
         "quick_sort_test.go",
     ],
-    deps = [
-        ":algorithms",
-        "//src/pkg/cmp",
-    ],
+    embed = [":algorithms"],
+    deps = ["//src/pkg/cmp"],
 )

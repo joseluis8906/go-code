@@ -3,7 +3,7 @@ package algorithms_test
 import (
 	"testing"
 
-	"github.com/joseluis8906/go-code/src/pkg/algorithms"
+	"github.com/joseluis8906/go-code/src/algorithms"
 	"github.com/joseluis8906/go-code/src/pkg/cmp"
 )
 
@@ -15,7 +15,7 @@ func TestInsertSort(t *testing.T) {
 
 	algorithms.InsertSort(got)
 
-	if cmp.Equal(got, want) {
+	if !cmp.Equal(got, want) {
 		t.Errorf("InsertSort(%v) = %v; want %v\n%v", got, want, got, cmp.Diff(want, got))
 	}
 
