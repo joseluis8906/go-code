@@ -4,10 +4,6 @@ go_library(
     name = "storemanager",
     srcs = [
         "forms.go",
-        "registers_a_store.go",
-        "registers_products.go",
-        "reports_order_is_ready.go",
-        "reports_order_is_taken.go",
         "storemanager.go",
     ],
     importpath = "github.com/joseluis8906/go-code/src/delivery/internal/storemanager",

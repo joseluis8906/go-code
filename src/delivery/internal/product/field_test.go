@@ -87,7 +87,7 @@ func TestPrice(t *testing.T) {
 		t.Parallel()
 
 		in := struct {
-			Amount   int
+			Amount   int64
 			Currency string
 		}{
 			Amount:   1000,
@@ -108,7 +108,7 @@ func TestPrice(t *testing.T) {
 		t.Parallel()
 
 		in := struct {
-			Amount   int
+			Amount   int64
 			Currency string
 		}{
 			Amount:   1000,

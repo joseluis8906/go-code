@@ -2,8 +2,8 @@ package product
 
 import "context"
 
-// Product is an extended delivery product.
 type (
+	// Product is an extended delivery product.
 	Product struct {
 		Ref   Ref
 		Name  Name

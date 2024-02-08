@@ -11,12 +11,12 @@ request:
           amount: 3
           currency: USD
       - ref: HDG-001
-        name: NY Hog Dog
+        name: NY Hot Dog
         price: 
           amount: 1
           currency: USD
       - ref: HDG-002
-        name: Franch Hog Dog
+        name: French Hot Dog
         price: 
           amount: 2
           currency: USD
