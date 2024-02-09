@@ -122,8 +122,8 @@ func TestPrice(t *testing.T) {
 		var got Price
 		err := got.UnmarshalBSON(data)
 
-		if err == nil || got != want {
-			t.Errorf("Price.UnmarshalBSON(%v) = %v, %v; want %v, nil\n%v", data, got, err, want, cmp.Diff(want, got))
+		if err != nil || !cmp.Equal(got, want) {
+			t.Errorf("Price.UnmarshalBSON(%v) = %v, %v; want %v, <nil>\n%v", data, got, err, want, cmp.Diff(want, got))
 		}
 	})
 }

@@ -34,18 +34,18 @@ func NewBank() Bank {
 //	bank.AddRate("CHF", "USD", 2)
 //	result := bank.Reduce(Franc(2), "USD") // result is Dollar(1)
 func (b Bank) Reduce(from Money, to Currency) (Money, error) {
-	if from.Currency() == to {
+	if from.Currency == to {
 		return from, nil
 	}
 
-	pair := Pair{from.Currency(), to}
+	pair := Pair{from.Currency, to}
 	rate, ok := b.rates[pair]
 
 	if !ok {
 		return from, errors.New("rate not found")
 	}
 
-	return NewMoney(int64(math.Round(float64(from.Amount())*rate)), to)
+	return NewMoney(int64(math.Round(float64(from.Amount)*rate)), to)
 }
 
 // AddRate adds a rate between two currencies.

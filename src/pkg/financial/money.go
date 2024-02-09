@@ -21,8 +21,8 @@ type (
 	//  five := Dollar(5)
 	//  ten := five.Times(2)
 	Money struct {
-		amount   int64
-		currency Currency
+		Amount   int64
+		Currency Currency
 	}
 
 	Currency string
@@ -72,23 +72,7 @@ func Franc(amount int64) Money {
 //	five := Dollar(5)
 //	five.Equals(ten) // false
 func (m Money) Equals(another Money) bool {
-	return m.Amount() == another.Amount() && m.Currency() == another.Currency()
-}
-
-// Currency returns the currency of the Money object. It can be used like this:
-//
-//	dollar := Dollar(5)
-//	dollar.Currency() // "USD"
-func (m Money) Currency() Currency {
-	return m.currency
-}
-
-// Amount returns the amount of the Money object. It can be used like this:
-//
-//	five := Dollar(5)
-//	five.Amount() // 5
-func (m Money) Amount() int64 {
-	return m.amount
+	return m.Amount == another.Amount && m.Currency == another.Currency
 }
 
 // Times multiplies the amount of the Money object by the given multiplier and returns a new Money object.
@@ -97,7 +81,7 @@ func (m Money) Amount() int64 {
 //	five := Dollar(5)
 //	ten := five.Times(2) // ten is a Dollar(10)
 func (m Money) Times(multiplier int64) Money {
-	return Money{m.amount * multiplier, m.currency}
+	return Money{m.Amount * multiplier, m.Currency}
 }
 
 // Plus adds the amount of the given Money object to the amount of the Money object and returns a new Money object.
@@ -106,9 +90,9 @@ func (m Money) Times(multiplier int64) Money {
 //	five := Dollar(5)
 //	ten := five.Plus(five) // ten is a Dollar(10)
 func (m Money) Plus(addend Money) Money {
-	if m.Currency() != addend.Currency() {
+	if m.Currency != addend.Currency {
 		return Money{0, ""}
 	}
 
-	return Money{m.Amount() + addend.Amount(), m.Currency()}
+	return Money{m.Amount + addend.Amount, m.Currency}
 }

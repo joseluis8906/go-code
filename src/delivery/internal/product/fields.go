@@ -83,8 +83,8 @@ func (p Price) MarshalBSON() ([]byte, error) {
 		Amount   int64
 		Currency string
 	}{
-		Amount:   p.Amount(),
-		Currency: string(p.Currency()),
+		Amount:   p.Amount,
+		Currency: string(p.Currency),
 	}
 
 	return bson.Marshal(price)
