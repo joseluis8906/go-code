@@ -7,6 +7,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//protobuf/pong:pongpb",
+        "//src/pong",
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//reflection",
         "@org_uber_go_fx//:fx",

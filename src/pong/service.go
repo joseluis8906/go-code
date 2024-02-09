@@ -3,17 +3,17 @@ package pong
 import (
 	"go.uber.org/fx"
 
-	"github.com/joseluis8906/go-code/idl/pongpb"
+	"github.com/joseluis8906/go-code/protobuf/pong/pongpb"
 )
 
 var Module = fx.Provide(NewPongService)
 
 type (
-	PongService struct {
+	PingService struct {
 		pongpb.UnimplementedPingServer
 	}
 )
 
-func NewPongService() *PongService {
-	return &PongService{}
+func NewPongService() *PingService {
+	return &PingService{}
 }

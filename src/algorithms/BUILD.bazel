@@ -24,6 +24,8 @@ go_test(
         "merge_sort_test.go",
         "quick_sort_test.go",
     ],
-    embed = [":algorithms"],
-    deps = ["//src/pkg/cmp"],
+    deps = [
+        ":algorithms",
+        "//src/pkg/cmp",
+    ],
 )
