@@ -1,6 +1,10 @@
-package algorithms
+package algorithms_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/joseluis8906/go-code/src/algorithms"
+)
 
 func TestLongestPalindromicSubstr(t *testing.T) {
 	testCases := map[string]struct {
@@ -17,7 +21,7 @@ func TestLongestPalindromicSubstr(t *testing.T) {
 		tc := tc
 
 		t.Run(name, func(t *testing.T) {
-			got := LongestPalindromicSubstr(tc.in)
+			got := algorithms.LongestPalindromicSubstr(tc.in)
 
 			if got != tc.want {
 				t.Errorf("LongestPalindromicSubstr(%s) = %s; want %s", tc.in, got, tc.want)
