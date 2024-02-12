@@ -8,6 +8,5 @@ go_library(
     deps = [
         "@com_github_spf13_viper//:viper",
         "@com_github_spf13_viper//remote",
-        "@org_uber_go_fx//:fx",
     ],
 )

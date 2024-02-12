@@ -5,4 +5,9 @@ go_library(
     srcs = ["logging.go"],
     importpath = "github.com/joseluis8906/go-code/src/delivery/internal/app/logging",
     visibility = ["//src/delivery:__subpackages__"],
+    deps = [
+        "@com_github_fluent_fluent_logger_golang//fluent",
+        "@com_github_spf13_viper//:viper",
+        "@org_uber_go_fx//:fx",
+    ],
 )

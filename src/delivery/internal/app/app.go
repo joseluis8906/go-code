@@ -9,6 +9,7 @@ import (
 	"github.com/joseluis8906/go-code/protobuf/delivery/customerpb"
 	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
 
+	"github.com/joseluis8906/go-code/src/delivery/internal/app/logging"
 	customer "github.com/joseluis8906/go-code/src/delivery/internal/customer/grpc"
 	storemanager "github.com/joseluis8906/go-code/src/delivery/internal/storemanager/grpc"
 
@@ -19,36 +20,36 @@ import (
 )
 
 type (
-	Params struct {
+	Deps struct {
 		fx.In
 
 		Config *viper.Viper
-		Logger *log.Logger
+		Log    *log.Logger
 
 		CustomerServer     *customer.GRPCServer
 		StoreManagerServer *storemanager.GRPCServer
 	}
 )
 
-func NewGRPCServer(lc fx.Lifecycle, params Params) *grpc.Server {
+func NewGRPCServer(lc fx.Lifecycle, deps Deps) *grpc.Server {
 	grpcServer := grpc.NewServer()
 
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
-			lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", params.Config.GetInt("grpc.port")))
+			lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", deps.Config.GetInt("grpc.port")))
 			if err != nil {
 				return err
 			}
 
-			customerpb.RegisterCustomerServer(grpcServer, params.CustomerServer)
-			storemanagerpb.RegisterStoreManagerServer(grpcServer, params.StoreManagerServer)
+			customerpb.RegisterCustomerServer(grpcServer, deps.CustomerServer)
+			storemanagerpb.RegisterStoreManagerServer(grpcServer, deps.StoreManagerServer)
 
 			reflection.Register(grpcServer)
 
 			go func() {
 				err := grpcServer.Serve(lis)
 				if err != nil {
-					params.Logger.Printf("starting grpc server: %w", err)
+					deps.Log.Printf("%v starting grpc server: %v", logging.Error, err)
 				}
 			}()
 

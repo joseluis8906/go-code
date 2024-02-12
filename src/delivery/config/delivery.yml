@@ -1,6 +1,13 @@
 ---
+env: dev
 logging:
   path: /tmp/delivery.log
+fluentd:
+  host: infra
+  port: 24224
+  network: tcp
+  json: true
+  tag: my.logs 
 grpc:
   port: 50051
 nats:

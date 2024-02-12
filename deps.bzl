@@ -63,6 +63,12 @@ def go_dependencies():
         version = "v0.1.0",
     )
     go_repository(
+        name = "com_github_bmizerany_assert",
+        importpath = "github.com/bmizerany/assert",
+        sum = "h1:DDGfHa7BWjL4YnC6+E63dPcxHo2sUxDIu8g3QgEJdRY=",
+        version = "v0.0.0-20160611221934-b7ed37b82869",
+    )
+    go_repository(
         name = "com_github_bmizerany_perks",
         importpath = "github.com/bmizerany/perks",
         sum = "h1:AP/Y7sqYicnjGDfD5VcY4CIfh1hRXBUavxrvELjTiOE=",
@@ -171,6 +177,12 @@ def go_dependencies():
         version = "v1.0.2",
     )
     go_repository(
+        name = "com_github_evalphobia_logrus_fluent",
+        importpath = "github.com/evalphobia/logrus_fluent",
+        sum = "h1:G4BSBTm7+L+oanWfFtA/A5Y3pvL2OMxviczyZPYO5xc=",
+        version = "v0.5.4",
+    )
+    go_repository(
         name = "com_github_fatih_color",
         importpath = "github.com/fatih/color",
         sum = "h1:qfhVLaG5s+nCROl1zJsZRxFeYrHLqWroPOQ8BWiNb4w=",
@@ -187,6 +199,12 @@ def go_dependencies():
         importpath = "github.com/felixge/httpsnoop",
         sum = "h1:NFTV2Zj1bL4mc9sqWACXbQFVBBg2W3GPvqp8/ESS2Wg=",
         version = "v1.0.4",
+    )
+    go_repository(
+        name = "com_github_fluent_fluent_logger_golang",
+        importpath = "github.com/fluent/fluent-logger-golang",
+        sum = "h1:zUdY44CHX2oIUc7VTNZc+4m+ORuO/mldQDA7czhWXEg=",
+        version = "v1.9.0",
     )
     go_repository(
         name = "com_github_flynn_go_shlex",
@@ -723,6 +741,12 @@ def go_dependencies():
         version = "v2.1.0",
     )
     go_repository(
+        name = "com_github_philhofer_fwd",
+        importpath = "github.com/philhofer/fwd",
+        sum = "h1:bnDivRJ1EWPjUIRXV5KfORO897HTbpFAQddBdE8t7Gw=",
+        version = "v1.1.2",
+    )
+    go_repository(
         name = "com_github_pkg_errors",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/pkg/errors",
@@ -820,6 +844,18 @@ def go_dependencies():
         version = "v0.1.0",
     )
     go_repository(
+        name = "com_github_samber_lo",
+        importpath = "github.com/samber/lo",
+        sum = "h1:j2XEAqXKb09Am4ebOg31SpvzUTTs6EN3VfgeLUhPdXM=",
+        version = "v1.38.1",
+    )
+    go_repository(
+        name = "com_github_samber_slog_fluentd",
+        importpath = "github.com/samber/slog-fluentd",
+        sum = "h1:mQYVCwiI5kzlRDyJJVwPAdNmw2FooTRYAQ7R8OBQQao=",
+        version = "v1.0.0",
+    )
+    go_repository(
         name = "com_github_samuel_go_thrift",
         importpath = "github.com/samuel/go-thrift",
         sum = "h1:EiWVfh8mr40yFZEui2oF0d45KgH48PkB2H0Z0GANvSI=",
@@ -834,8 +870,8 @@ def go_dependencies():
     go_repository(
         name = "com_github_sirupsen_logrus",
         importpath = "github.com/sirupsen/logrus",
-        sum = "h1:UBcNElsrwanuuMsnGSlYmtmgbb23qDR5dG+6X6Oo89I=",
-        version = "v1.6.0",
+        sum = "h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=",
+        version = "v1.9.3",
     )
     go_repository(
         name = "com_github_sourcegraph_conc",
@@ -878,6 +914,12 @@ def go_dependencies():
         importpath = "github.com/subosito/gotenv",
         sum = "h1:9NlTDc1FTs4qu0DDq7AEtTPNw6SVm7uBMsUCUjABIf8=",
         version = "v1.6.0",
+    )
+    go_repository(
+        name = "com_github_tinylib_msgp",
+        importpath = "github.com/tinylib/msgp",
+        sum = "h1:SHf3yoO2sGA0veCJeCBYLHuttAVFHGm2RHgNodW7wQU=",
+        version = "v1.1.9",
     )
     go_repository(
         name = "com_github_tv42_httpunix",
@@ -1836,8 +1878,8 @@ def go_dependencies():
     go_repository(
         name = "org_golang_x_mod",
         importpath = "golang.org/x/mod",
-        sum = "h1:rmsUpXtvNzj340zd98LZ4KntptpfRHwpFOHG188oHXc=",
-        version = "v0.12.0",
+        sum = "h1:I/DsJXRlw/8l/0c24sM9yb0T4z9liZTduXvdAWYiysY=",
+        version = "v0.13.0",
     )
     go_repository(
         name = "org_golang_x_net",
@@ -1885,8 +1927,8 @@ def go_dependencies():
     go_repository(
         name = "org_golang_x_tools",
         importpath = "golang.org/x/tools",
-        sum = "h1:Iey4qkscZuv0VvIt8E0neZjtPVQFSc870HQ448QgEmQ=",
-        version = "v0.13.0",
+        sum = "h1:jvNa2pY0M4r62jkRQ6RwEZZyPcymeL9XZMLBbV7U2nc=",
+        version = "v0.14.0",
     )
     go_repository(
         name = "org_golang_x_xerrors",

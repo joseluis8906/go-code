@@ -18,8 +18,8 @@ import (
 
 // Module exports the module for app.
 var Module = fx.Provide(
-	logging.New,
 	config.New,
+	logging.New,
 	bus.New,
 	nosql.New,
 

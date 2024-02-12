@@ -7,6 +7,7 @@ go_library(
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
         "//protobuf/delivery/storemanager:storemanagerpb",
+        "//src/delivery/internal/app/logging",
         "//src/delivery/internal/app/registry",
         "//src/delivery/internal/storemanager",
         "//src/pkg/grpc",

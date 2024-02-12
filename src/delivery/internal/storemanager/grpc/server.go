@@ -7,6 +7,7 @@ import (
 	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 
+	"github.com/joseluis8906/go-code/src/delivery/internal/app/logging"
 	"github.com/joseluis8906/go-code/src/delivery/internal/app/registry"
 	"github.com/joseluis8906/go-code/src/delivery/internal/storemanager"
 
@@ -21,7 +22,7 @@ type (
 	Deps struct {
 		fx.In
 
-		Logs     *log.Logger
+		Log      *log.Logger
 		Registry *registry.Repository
 	}
 
@@ -29,7 +30,7 @@ type (
 	GRPCServer struct {
 		storemanagerpb.UnimplementedStoreManagerServer
 
-		logs     *log.Logger
+		log      *log.Logger
 		registry *registry.Repository
 	}
 )
@@ -37,7 +38,7 @@ type (
 // NewDeliveryService returns a new instance of DeliveryService.
 func NewGRPCServer(deps Deps) *GRPCServer {
 	return &GRPCServer{
-		logs:     deps.Logs,
+		log:      deps.Log,
 		registry: deps.Registry,
 	}
 }
@@ -47,6 +48,8 @@ func NewGRPCServer(deps Deps) *GRPCServer {
 // It returns an empty response or an error if the actor fails to execute the method.
 // If the gRPC request does not contain a valid x-auth-email header it returns and error.
 func (s *GRPCServer) RegistersAStore(ctx context.Context, req *storemanagerpb.RegistersAStoreRequest) (*emptypb.Empty, error) {
+	s.log.Printf("%v RegistersAStore", logging.Info)
+
 	email, err := grpc.Header(ctx, authEmail).ExpectOne()
 	if err != nil {
 		return nil, err
@@ -72,6 +75,8 @@ func (s *GRPCServer) RegistersAStore(ctx context.Context, req *storemanagerpb.Re
 // It returns an empty response or an error if the actor fails to execute the method.
 // If the gRPC request does not contain a valid x-auth-email header it returns and error.
 func (s *GRPCServer) RegistersProducts(ctx context.Context, req *storemanagerpb.RegistersProductsRequest) (*emptypb.Empty, error) {
+	s.log.Printf("%v RegistersProducts", logging.Info)
+
 	email, err := grpc.Header(ctx, authEmail).ExpectOne()
 	if err != nil {
 		return nil, err
