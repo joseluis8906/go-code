@@ -1,7 +1,7 @@
 ---
 env: dev
-logging:
-  path: /tmp/delivery.log
+otel:
+  endpoint: http://infra:4317
 fluentd:
   host: infra
   port: 24224

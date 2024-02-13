@@ -5,7 +5,7 @@ import (
 
 	"github.com/joseluis8906/go-code/src/delivery/internal/app/bus"
 	"github.com/joseluis8906/go-code/src/delivery/internal/app/config"
-	"github.com/joseluis8906/go-code/src/delivery/internal/app/logging"
+	"github.com/joseluis8906/go-code/src/delivery/internal/app/log"
 	"github.com/joseluis8906/go-code/src/delivery/internal/app/nosql"
 	"github.com/joseluis8906/go-code/src/delivery/internal/app/registry"
 
@@ -19,7 +19,7 @@ import (
 // Module exports the module for app.
 var Module = fx.Provide(
 	config.New,
-	logging.New,
+	log.New,
 	bus.New,
 	nosql.New,
 

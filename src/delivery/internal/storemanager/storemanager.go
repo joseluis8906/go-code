@@ -7,6 +7,7 @@ import (
 
 	"github.com/joseluis8906/go-code/src/delivery/internal/product"
 	"github.com/joseluis8906/go-code/src/delivery/internal/store"
+	"go.opentelemetry.io/otel"
 
 	"github.com/joseluis8906/go-code/src/pkg/repository"
 )
@@ -32,6 +33,9 @@ type (
 // If the store already has products they will be kept.
 // The store's products are updated by the RegistersProducts method.
 func (sm *StoreManager) RegistersAStore(ctx context.Context, form StoreForm) error {
+	ctx, span := otel.Tracer("").Start(ctx, "storemanager.StoreManager.RegistersAStore")
+	defer span.End()
+
 	criteria := repository.Contains(store.NameField, form.Name)
 	currentStore, err := sm.Stores.Get(ctx, criteria).ExpectOne()
 	if err != nil && !errors.Is(err, repository.ErrNoData) {

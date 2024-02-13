@@ -13,6 +13,7 @@ go_library(
         "//src/delivery/internal/product",
         "//src/pkg/repository",
         "//src/pkg/types",
+        "@io_opentelemetry_go_otel//:otel",
         "@org_mongodb_go_mongo_driver//bson",
         "@org_mongodb_go_mongo_driver//bson/bsontype",
         "@org_mongodb_go_mongo_driver//mongo",

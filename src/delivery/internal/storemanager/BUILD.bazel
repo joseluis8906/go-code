@@ -12,5 +12,6 @@ go_library(
         "//src/delivery/internal/product",
         "//src/delivery/internal/store",
         "//src/pkg/repository",
+        "@io_opentelemetry_go_otel//:otel",
     ],
 )

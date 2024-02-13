@@ -1,9 +1,9 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "logging",
-    srcs = ["logging.go"],
-    importpath = "github.com/joseluis8906/go-code/src/delivery/internal/app/logging",
+    name = "log",
+    srcs = ["log.go"],
+    importpath = "github.com/joseluis8906/go-code/src/delivery/internal/app/log",
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
         "@com_github_fluent_fluent_logger_golang//fluent",

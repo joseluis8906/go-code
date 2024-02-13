@@ -1,4 +1,4 @@
-package logging
+package log
 
 import (
 	"fmt"
@@ -10,11 +10,6 @@ import (
 	"github.com/fluent/fluent-logger-golang/fluent"
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
-)
-
-const (
-	Info  string = "INFO"
-	Error string = "ERROR"
 )
 
 type (
@@ -43,9 +38,9 @@ func (l *Logger) Write(data []byte) (int, error) {
 	structured["env"] = l.env
 	structured["app"] = values[0]
 	structured["datetime"] = fmt.Sprintf("%v %v", values[1], values[2])
-	structured["line"] = values[3]
+	structured["line"] = strings.TrimSuffix(values[3], ":")
 	structured["level"] = values[4]
-	structured["message"] = values[5]
+	structured["message"] = strings.Join(values[5:], " ")
 
 	return len(data), l.conn.Post(l.tag, structured)
 }
@@ -73,4 +68,12 @@ func New(deps Deps) *log.Logger {
 	l.SetFlags(log.LstdFlags | log.Llongfile)
 
 	return l
+}
+
+func Info(message string) string {
+	return fmt.Sprintf("INFO %v", message)
+}
+
+func Error(message string) string {
+	return fmt.Sprintf("ERROR %v", message)
 }

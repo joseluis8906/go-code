@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/joseluis8906/go-code/src/pkg/repository"
+	"go.opentelemetry.io/otel"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -86,6 +87,9 @@ func NewRepository(deps Deps) (*Repository, error) {
 
 // Matchig returns the assistant for the given system.
 func (r *Repository) Get(ctx context.Context, criteria repository.Criteria) repository.Result[Store] {
+	ctx, span := otel.Tracer("").Start(ctx, "store.Repository.Get")
+	defer span.End()
+
 	var result []Store
 
 	opts := options.Find().
@@ -104,6 +108,7 @@ func (r *Repository) Get(ctx context.Context, criteria repository.Criteria) repo
 		},
 	}
 
+	span.AddEvent(fmt.Sprintf("db.stores.find({\"%s\": {\"$regex\": \"%s\"}})", criteria.Field(), criteria.Value()))
 	cursor, err := r.client.Database(r.db).Collection(r.collection).Find(ctx, query, opts)
 	if err != nil {
 		return repository.Error[Store](fmt.Errorf("searching in mongo: %w", err))

@@ -22,7 +22,7 @@ build-bsd:
 
 .PHONY: run
 run:
-	@cd /$(BAZEL_BIN)/src/$(PROJECT_NAME)/cmd/$(PROJECT_NAME)/$(PROJECT_NAME)_/ && CONFIG_URL="http://infra:4001" ./$(PROJECT_NAME)
+	@cd /$(BAZEL_BIN)/src/$(PROJECT_NAME)/cmd/$(PROJECT_NAME)/$(PROJECT_NAME)_/ && CONFIG_URL="http://infra:4001" OTEL_SERVICE_NAME="delivery" ./$(PROJECT_NAME)
 
 .PHONY: debug
 debug:
