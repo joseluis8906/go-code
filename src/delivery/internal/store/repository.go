@@ -54,7 +54,6 @@ func NewRepository(deps Deps) (*Repository, error) {
 					Value: 1,
 				},
 			},
-			Options: options.Index().SetUnique(true),
 		},
 		{
 			Keys: bson.D{
