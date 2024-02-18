@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
@@ -52,7 +53,7 @@ func (s *GRPCServer) RegistersAStore(ctx context.Context, req *storemanagerpb.Re
 
 	email, err := grpc.Header(ctx, authEmail).ExpectOne()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("getting grpc x-auth-email header: %q", err)
 	}
 
 	theStoremanager := storemanager.StoreManager{

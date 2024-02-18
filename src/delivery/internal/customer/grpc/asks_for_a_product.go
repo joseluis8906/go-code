@@ -12,7 +12,7 @@ import (
 	"github.com/joseluis8906/go-code/src/pkg/repository"
 
 	"github.com/joseluis8906/go-code/protobuf/delivery/customerpb"
-	"github.com/joseluis8906/go-code/protobuf/delivery/deliverypb"
+	"github.com/joseluis8906/go-code/protobuf/deliverypb"
 )
 
 const appName = "delivery"
