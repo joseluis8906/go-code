@@ -1,9 +1,10 @@
 ---
-env: dev
+app:
+  name: delivery
 otel:
   endpoint: http://infra:4317
 fluentd:
-  host: infra
+  host: docker 
   port: 24224
   network: tcp
   json: true

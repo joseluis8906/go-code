@@ -49,7 +49,9 @@ func NewGRPCServer(deps Deps) *GRPCServer {
 // It returns an empty response or an error if the actor fails to execute the method.
 // If the gRPC request does not contain a valid x-auth-email header it returns and error.
 func (s *GRPCServer) RegistersAStore(ctx context.Context, req *storemanagerpb.RegistersAStoreRequest) (*emptypb.Empty, error) {
-	s.log.Printf(ll.Info("calling storemanager.RegistersAStore: %v"), "hello!")
+	s.log.Printf(ll.Info("calling storemanager.RegistersAStore: %v"), "foo!")
+	s.log.Printf("calling storemanager.RegistersAStore: %v", "bar!")
+	s.log.Printf(ll.Error("calling storemanager.RegistersAStore: %v"), "baz!")
 
 	email, err := grpc.Header(ctx, authEmail).ExpectOne()
 	if err != nil {
