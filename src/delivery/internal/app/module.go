@@ -12,8 +12,8 @@ import (
 	"github.com/joseluis8906/go-code/src/delivery/internal/customer"
 	"github.com/joseluis8906/go-code/src/delivery/internal/store"
 
+	"github.com/joseluis8906/go-code/src/delivery/internal/app/grpc"
 	grpccustomer "github.com/joseluis8906/go-code/src/delivery/internal/customer/grpc"
-	grpcstoremanager "github.com/joseluis8906/go-code/src/delivery/internal/storemanager/grpc"
 )
 
 // Module exports the module for app.
@@ -27,6 +27,6 @@ var Module = fx.Provide(
 	store.NewRepository,
 	registry.New,
 
+	grpc.NewStoreManager,
 	grpccustomer.NewGRPCServer,
-	grpcstoremanager.NewGRPCServer,
 )

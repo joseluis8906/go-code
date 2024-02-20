@@ -1,8 +1,6 @@
 package store
 
 import (
-	"context"
-
 	"github.com/joseluis8906/go-code/src/delivery/internal/product"
 )
 
@@ -15,17 +13,13 @@ type (
 		Products []product.Product
 	}
 
-	storeBuilder struct {
+	Builder struct {
 		store Store
 		err   error
 	}
 )
 
-func New() *storeBuilder {
-	return &storeBuilder{}
-}
-
-func (sb *storeBuilder) Name(name string) *storeBuilder {
+func (sb *Builder) Name(name string) *Builder {
 	if sb.err != nil {
 		return sb
 	}
@@ -34,7 +28,7 @@ func (sb *storeBuilder) Name(name string) *storeBuilder {
 	return sb
 }
 
-func (sb *storeBuilder) Country(country string) *storeBuilder {
+func (sb *Builder) Country(country string) *Builder {
 	if sb.err != nil {
 		return sb
 	}
@@ -43,7 +37,7 @@ func (sb *storeBuilder) Country(country string) *storeBuilder {
 	return sb
 }
 
-func (sb *storeBuilder) City(city string) *storeBuilder {
+func (sb *Builder) City(city string) *Builder {
 	if sb.err != nil {
 		return sb
 	}
@@ -52,7 +46,7 @@ func (sb *storeBuilder) City(city string) *storeBuilder {
 	return sb
 }
 
-func (sb *storeBuilder) Address(address string) *storeBuilder {
+func (sb *Builder) Address(address string) *Builder {
 	if sb.err != nil {
 		return sb
 	}
@@ -61,6 +55,6 @@ func (sb *storeBuilder) Address(address string) *storeBuilder {
 	return sb
 }
 
-func (sb *storeBuilder) Do(ctx context.Context) (Store, error) {
+func (sb *Builder) Build() (Store, error) {
 	return sb.store, sb.err
 }

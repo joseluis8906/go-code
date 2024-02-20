@@ -11,7 +11,7 @@ import (
 
 	ll "github.com/joseluis8906/go-code/src/delivery/internal/app/log"
 	customer "github.com/joseluis8906/go-code/src/delivery/internal/customer/grpc"
-	storemanager "github.com/joseluis8906/go-code/src/delivery/internal/storemanager/grpc"
+	"github.com/joseluis8906/go-code/src/delivery/internal/storemanager"
 
 	"github.com/spf13/viper"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"

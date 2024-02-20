@@ -1,7 +1,5 @@
 package product
 
-import "context"
-
 type (
 	// Product is an extended delivery product.
 	Product struct {
@@ -10,17 +8,17 @@ type (
 		Price Price
 	}
 
-	productBuilder struct {
+	Builder struct {
 		product Product
 		err     error
 	}
 )
 
-func New() *productBuilder {
-	return &productBuilder{}
+func New() *Builder {
+	return &Builder{}
 }
 
-func (pb *productBuilder) Ref(ref string) *productBuilder {
+func (pb *Builder) Ref(ref string) *Builder {
 	if pb.err != nil {
 		return pb
 	}
@@ -29,7 +27,7 @@ func (pb *productBuilder) Ref(ref string) *productBuilder {
 	return pb
 }
 
-func (pb *productBuilder) Name(name string) *productBuilder {
+func (pb *Builder) Name(name string) *Builder {
 	if pb.err != nil {
 		return pb
 	}
@@ -38,7 +36,7 @@ func (pb *productBuilder) Name(name string) *productBuilder {
 	return pb
 }
 
-func (pb *productBuilder) Price(amount int64, currency string) *productBuilder {
+func (pb *Builder) Price(amount int64, currency string) *Builder {
 	if pb.err != nil {
 		return pb
 	}
@@ -47,7 +45,7 @@ func (pb *productBuilder) Price(amount int64, currency string) *productBuilder {
 	return pb
 }
 
-func (pb *productBuilder) Do(ctx context.Context) (Product, error) {
+func (pb *Builder) Build() (Product, error) {
 	if pb.err != nil {
 		return Product{}, pb.err
 	}
