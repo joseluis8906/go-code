@@ -26,3 +26,23 @@ type (
 		Valid bool
 	}
 )
+
+func (sv StringValue) IsZero() bool {
+	return sv.Value == ""
+}
+
+func (iv IntValue) IsZero() bool {
+	return iv.Value == 0
+}
+
+func (uv UintValue) IsZero() bool {
+	return uv.Value == 0
+}
+
+func (fv FloatValue) IsZero() bool {
+	return fv.Value == 0
+}
+
+func (fv Float64Value) IsZero() bool {
+	return fv.Value == 0
+}

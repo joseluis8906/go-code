@@ -41,7 +41,7 @@ func NewRepository(deps Deps) (*Repository, error) {
 		{
 			Keys: bson.D{
 				{
-					Key:   NameField,
+					Key:   Fields().Name,
 					Value: 1,
 				},
 			},
@@ -50,7 +50,7 @@ func NewRepository(deps Deps) (*Repository, error) {
 		{
 			Keys: bson.D{
 				{
-					Key:   ProductRefField,
+					Key:   Fields().Products.Ref,
 					Value: 1,
 				},
 			},
@@ -58,7 +58,7 @@ func NewRepository(deps Deps) (*Repository, error) {
 		{
 			Keys: bson.D{
 				{
-					Key:   ProductNameField,
+					Key:   Fields().Products.Ref,
 					Value: 1,
 				},
 			},
@@ -123,17 +123,17 @@ func (r *Repository) Get(ctx context.Context, criteria repository.Criteria) repo
 func (r *Repository) Add(ctx context.Context, aStore Store) error {
 	filter := bson.D{
 		{
-			Key:   NameField,
+			Key:   Fields().Name,
 			Value: aStore.Name.Value,
 		},
 	}
 
-	err := r.client.Database(r.db).
+	_, err := r.client.Database(r.db).
 		Collection(r.collection).
-		FindOneAndReplace(ctx, filter, aStore, options.FindOneAndReplace().SetUpsert(true)).Err()
+		ReplaceOne(ctx, filter, aStore, options.Replace().SetUpsert(true))
 
 	if err != nil {
-		return fmt.Errorf("finding and replacing in mongo: %w", err)
+		return fmt.Errorf("creating or replacing in mongo: %w", err)
 	}
 
 	return nil

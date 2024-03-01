@@ -8,11 +8,22 @@ import (
 	"go.mongodb.org/mongo-driver/bson/bsontype"
 )
 
-const (
-	NameField        string = "name"
-	ProductRefField  string = "products.ref"
-	ProductNameField string = "products.name"
-)
+type fields struct {
+	Name     string
+	Products struct {
+		Ref  string
+		Name string
+	}
+}
+
+func Fields() fields {
+	var f fields
+	f.Name = "name"
+	f.Products.Ref = "products.ref"
+	f.Products.Name = "products.name"
+
+	return f
+}
 
 type (
 	Name    types.StringValue
@@ -22,6 +33,10 @@ type (
 )
 
 func NewName(value string) (Name, error) {
+	if len(value) < 2 {
+		return Name{}, fmt.Errorf("name length must be bigger than 2")
+	}
+
 	return Name{Value: value, Valid: true}, nil
 }
 
@@ -107,4 +122,8 @@ func (c *Address) UnmarshalBSONValue(t bsontype.Type, val []byte) error {
 	c.Valid = true
 
 	return nil
+}
+
+func (n Name) IsZero() bool {
+	return n.Value == ""
 }

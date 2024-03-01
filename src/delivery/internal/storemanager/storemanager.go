@@ -36,16 +36,10 @@ type (
 // The store's products are updated by the RegistersProducts method.
 func (sm *StoreManager) RegistersAStore(ctx context.Context, form *storemanagerpb.RegistersAStoreRequest) error {
 	reqStore := form.GetStore()
-	name := reqStore.GetName().Value
-	country := reqStore.GetCountry().Value
-	city := reqStore.GetCity().Value
-	address := reqStore.GetAddress().Value
-
-	criteria := repository.Contains(store.NameField, name)
-	currentStore, err := sm.Stores.Get(ctx, criteria).ExpectOne()
-	if err != nil && !errors.Is(err, repository.ErrNoData) {
-		return fmt.Errorf("getting store: %w", err)
-	}
+	name := reqStore.GetName().GetValue()
+	country := reqStore.GetCountry().GetValue()
+	city := reqStore.GetCity().GetValue()
+	address := reqStore.GetAddress().GetValue()
 
 	var sb store.Builder
 	sb.Name(name)
@@ -58,10 +52,20 @@ func (sm *StoreManager) RegistersAStore(ctx context.Context, form *storemanagerp
 		return fmt.Errorf("creating new store: %w", err)
 	}
 
-	newStore.Products = currentStore.Products
+	criteria := repository.Equals(store.Fields().Name, newStore.Name.Value)
+
+	oldStore, err := sm.Stores.Get(ctx, criteria).ExpectOne()
+	if err != nil && !errors.Is(err, repository.ErrNoData) {
+		return fmt.Errorf("verifing exisiting store: %w", err)
+	}
+
+	if !oldStore.IsZero() {
+		return errors.New("store already exists")
+	}
+
 	err = sm.Stores.Add(ctx, newStore)
 	if err != nil {
-		return fmt.Errorf("persisting store: %w", err)
+		return fmt.Errorf("persisting new store: %w", err)
 	}
 
 	return nil
@@ -72,34 +76,37 @@ func (sm *StoreManager) RegistersAStore(ctx context.Context, form *storemanagerp
 // If products already exist, it will update the existing products with the new data.
 func (sm *StoreManager) RegistersProducts(ctx context.Context, form *storemanagerpb.RegistersProductsRequest) error {
 	reqStore := form.GetStore()
-	name := reqStore.GetName().Value
+	name := reqStore.GetName().GetValue()
 
-	criteria := repository.Contains(store.NameField, name)
+	criteria := repository.Contains(store.Fields().Name, name)
 	theStore, err := sm.Stores.Get(ctx, criteria).ExpectOne()
 	if err != nil {
 		return fmt.Errorf("getting store: %w", err)
 	}
 
-	currentMenu := make(map[string]product.Product, len(theStore.Products))
+	currentMenu := make(map[product.Ref]product.Product, len(theStore.Products))
 	for _, p := range theStore.Products {
-		currentMenu[p.Ref.Value] = p
+		currentMenu[p.Ref] = p
 	}
 
 	newProducts := form.GetStore().GetProducts()
 	for _, pf := range newProducts {
-		price := pf.GetPrice()
+		ref := pf.GetRef().GetValue()
+		name := pf.GetName().GetValue()
+		amount := pf.GetPrice().GetAmount().GetValue()
+		currency := pf.GetPrice().GetCurrency().GetValue()
 
 		var pb product.Builder
-		pb.Ref(pf.GetRef().Value)
-		pb.Name(pf.GetName().Value)
-		pb.Price(price.GetAmount().Value, price.GetCurrency().Value)
+		pb.Ref(ref)
+		pb.Name(name)
+		pb.Price(amount, currency)
 
 		newProduct, err := pb.Build()
 		if err != nil {
 			return fmt.Errorf("creating new product: %w", err)
 		}
 
-		currentMenu[newProduct.Name.Value] = newProduct
+		currentMenu[newProduct.Ref] = newProduct
 	}
 
 	theStore.Products = make([]product.Product, 0, len(currentMenu))

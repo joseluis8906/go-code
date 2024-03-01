@@ -58,3 +58,7 @@ func (sb *Builder) Address(address string) *Builder {
 func (sb *Builder) Build() (Store, error) {
 	return sb.store, sb.err
 }
+
+func (s Store) IsZero() bool {
+	return s.Name.IsZero()
+}
