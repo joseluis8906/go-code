@@ -1,5 +1,7 @@
 package product
 
+import "github.com/joseluis8906/go-code/protobuf/deliverypb"
+
 type (
 	// Product is an extended delivery product.
 	Product struct {
@@ -51,4 +53,18 @@ func (pb *Builder) Build() (Product, error) {
 	}
 
 	return pb.product, nil
+}
+
+func FromPB(data *deliverypb.Product) (Product, error) {
+	ref := data.GetRef().GetValue()
+	name := data.GetName().GetValue()
+	amount := data.GetPrice().GetAmount().GetValue()
+	currency := data.GetPrice().GetCurrency().GetValue()
+
+	var pb Builder
+	pb.Ref(ref)
+	pb.Name(name)
+	pb.Price(amount, currency)
+
+	return pb.Build()
 }

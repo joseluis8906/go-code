@@ -34,25 +34,13 @@ type (
 // The store's products are not updated, only the store's information.
 // If the store already has products they will be kept.
 // The store's products are updated by the RegistersProducts method.
-func (sm *StoreManager) RegistersAStore(ctx context.Context, form *storemanagerpb.RegistersAStoreRequest) error {
-	reqStore := form.GetStore()
-	name := reqStore.GetName().GetValue()
-	country := reqStore.GetCountry().GetValue()
-	city := reqStore.GetCity().GetValue()
-	address := reqStore.GetAddress().GetValue()
-
-	var sb store.Builder
-	sb.Name(name)
-	sb.Country(country)
-	sb.City(city)
-	sb.Address(address)
-
-	newStore, err := sb.Build()
+func (sm *StoreManager) RegistersAStore(ctx context.Context, req *storemanagerpb.RegistersAStoreRequest) error {
+	newStore, err := store.FromPB(req.GetStore())
 	if err != nil {
 		return fmt.Errorf("creating new store: %w", err)
 	}
 
-	criteria := repository.Equals(store.Fields().Name, newStore.Name.Value)
+	criteria := repository.Equals(store.Fields().Name, fmt.Sprintf("%s", newStore.Name))
 
 	oldStore, err := sm.Stores.Get(ctx, criteria).ExpectOne()
 	if err != nil && !errors.Is(err, repository.ErrNoData) {
@@ -75,42 +63,35 @@ func (sm *StoreManager) RegistersAStore(ctx context.Context, form *storemanagerp
 // If the store does not exist, it will return an error.
 // If products already exist, it will update the existing products with the new data.
 func (sm *StoreManager) RegistersProducts(ctx context.Context, form *storemanagerpb.RegistersProductsRequest) error {
-	reqStore := form.GetStore()
-	name := reqStore.GetName().GetValue()
+	name, err := store.NewName(form.GetStore().GetName().GetValue())
+	if err != nil {
+		return fmt.Errorf("casting store name: %w", err)
+	}
 
-	criteria := repository.Contains(store.Fields().Name, name)
+	criteria := repository.Contains(store.Fields().Name, fmt.Sprintf("%s", name))
+
 	theStore, err := sm.Stores.Get(ctx, criteria).ExpectOne()
 	if err != nil {
 		return fmt.Errorf("getting store: %w", err)
 	}
 
-	currentMenu := make(map[product.Ref]product.Product, len(theStore.Products))
+	theCatalog := make(map[product.Ref]product.Product, len(theStore.Products))
 	for _, p := range theStore.Products {
-		currentMenu[p.Ref] = p
+		theCatalog[p.Ref] = p
 	}
 
 	newProducts := form.GetStore().GetProducts()
-	for _, pf := range newProducts {
-		ref := pf.GetRef().GetValue()
-		name := pf.GetName().GetValue()
-		amount := pf.GetPrice().GetAmount().GetValue()
-		currency := pf.GetPrice().GetCurrency().GetValue()
-
-		var pb product.Builder
-		pb.Ref(ref)
-		pb.Name(name)
-		pb.Price(amount, currency)
-
-		newProduct, err := pb.Build()
+	for _, p := range newProducts {
+		newProduct, err := product.FromPB(p)
 		if err != nil {
 			return fmt.Errorf("creating new product: %w", err)
 		}
 
-		currentMenu[newProduct.Ref] = newProduct
+		theCatalog[newProduct.Ref] = newProduct
 	}
 
-	theStore.Products = make([]product.Product, 0, len(currentMenu))
-	for _, p := range currentMenu {
+	theStore.Products = make([]product.Product, 0, len(theCatalog))
+	for _, p := range theCatalog {
 		theStore.Products = append(theStore.Products, p)
 	}
 

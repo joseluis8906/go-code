@@ -70,6 +70,10 @@ func (n *Name) UnmarshalBSONValue(t bsontype.Type, val []byte) error {
 	return nil
 }
 
+func (n *Name) String() string {
+	return n.Value
+}
+
 func (c Country) MarshalBSONValue() (bsontype.Type, []byte, error) {
 	return bson.MarshalValue(c.Value)
 }

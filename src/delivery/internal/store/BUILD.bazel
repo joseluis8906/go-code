@@ -10,6 +10,7 @@ go_library(
     importpath = "github.com/joseluis8906/go-code/src/delivery/internal/store",
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
+        "//protobuf/delivery:deliverypb",
         "//src/delivery/internal/product",
         "//src/pkg/repository",
         "//src/pkg/types",

@@ -9,6 +9,7 @@ go_library(
     importpath = "github.com/joseluis8906/go-code/src/delivery/internal/product",
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
+        "//protobuf/delivery:deliverypb",
         "//src/pkg/financial",
         "//src/pkg/types",
         "@org_mongodb_go_mongo_driver//bson",

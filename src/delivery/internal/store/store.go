@@ -1,6 +1,7 @@
 package store
 
 import (
+	"github.com/joseluis8906/go-code/protobuf/deliverypb"
 	"github.com/joseluis8906/go-code/src/delivery/internal/product"
 )
 
@@ -61,4 +62,19 @@ func (sb *Builder) Build() (Store, error) {
 
 func (s Store) IsZero() bool {
 	return s.Name.IsZero()
+}
+
+func FromPB(data *deliverypb.Store) (Store, error) {
+	name := data.GetName().GetValue()
+	country := data.GetCountry().GetValue()
+	city := data.GetCity().GetValue()
+	address := data.GetAddress().GetValue()
+
+	var sb Builder
+	sb.Name(name)
+	sb.Country(country)
+	sb.City(city)
+	sb.Address(address)
+
+	return sb.Build()
 }
