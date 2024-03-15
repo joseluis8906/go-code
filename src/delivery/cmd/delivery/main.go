@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"net/http"
 	"os/signal"
 	"syscall"
 
@@ -19,7 +20,9 @@ func main() {
 	app := fx.New(
 		fx.Options(app.Module),
 		fx.Provide(app.NewGRPCServer),
+		fx.Provide(app.NewHTTPServer),
 		fx.Invoke(func(*grpc.Server) {}),
+		fx.Invoke(func(*http.Server) {}),
 	)
 
 	err := app.Start(ctx)

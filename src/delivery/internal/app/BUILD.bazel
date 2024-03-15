@@ -21,6 +21,7 @@ go_library(
         "//src/delivery/internal/customer/grpc",
         "//src/delivery/internal/store",
         "//src/delivery/internal/storemanager",
+        "@com_github_prometheus_client_golang//prometheus/promhttp",
         "@com_github_spf13_viper//:viper",
         "@io_opentelemetry_go_contrib_instrumentation_google_golang_org_grpc_otelgrpc//:otelgrpc",
         "@io_opentelemetry_go_otel//:otel",

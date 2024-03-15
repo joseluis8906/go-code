@@ -70,7 +70,7 @@ func (n *Name) UnmarshalBSONValue(t bsontype.Type, val []byte) error {
 	return nil
 }
 
-func (n *Name) String() string {
+func (n Name) String() string {
 	return n.Value
 }
 

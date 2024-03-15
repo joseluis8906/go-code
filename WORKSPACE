@@ -170,6 +170,14 @@ go_repository(
     version = "v1.14.0",
 )
 
+# go_repository(
+#     name = "com_github_prometheus_client_golang",
+#     build_file_proto_mode = "disable_global",
+#     importpath = "github.com/prometheus/client_golang",
+#     sum = "h1:ygXvpU1AoN1MhdzckN+PyD9QJOSD4x7kmXYlnfbA6JU=",
+#     version = "v1.19.0",
+# )
+
 load("//:deps.bzl", "go_dependencies")
 
 # gazelle:repository_macro deps.bzl%go_dependencies

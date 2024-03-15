@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"net/http"
 
 	"github.com/joseluis8906/go-code/protobuf/delivery/customerpb"
 	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	ll "github.com/joseluis8906/go-code/src/delivery/internal/app/log"
 	customer "github.com/joseluis8906/go-code/src/delivery/internal/customer/grpc"
@@ -83,4 +85,34 @@ func NewGRPCServer(lc fx.Lifecycle, deps Deps) *grpc.Server {
 	})
 
 	return grpcServer
+}
+
+func NewHTTPServer(lc fx.Lifecycle, deps Deps) *http.Server {
+	handler := http.NewServeMux()
+	handler.Handle("/metrics", promhttp.Handler())
+
+	srv := &http.Server{
+		Addr:    ":9090",
+		Handler: handler,
+	}
+
+	lc.Append(fx.Hook{
+		OnStart: func(ctx context.Context) error {
+			ln, err := net.Listen("tcp", srv.Addr)
+			if err != nil {
+				return err
+			}
+
+			fmt.Println("Starting HTTP server at", srv.Addr)
+
+			go srv.Serve(ln)
+
+			return nil
+		},
+		OnStop: func(ctx context.Context) error {
+			return srv.Shutdown(ctx)
+		},
+	})
+
+	return srv
 }
