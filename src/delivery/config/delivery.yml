@@ -4,7 +4,7 @@ app:
 otel:
   endpoint: http://infra:4317
 fluentd:
-  host: docker 
+  host: infra 
   port: 24224
   network: tcp
   json: true
