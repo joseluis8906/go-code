@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
+	pb "github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
 
 	"github.com/joseluis8906/go-code/src/delivery/internal/product"
 	"github.com/joseluis8906/go-code/src/delivery/internal/store"
@@ -29,12 +29,12 @@ type (
 	}
 )
 
-// RegistersAStore creates a new store with the provided data.
+// AddStore creates a new store with the provided data.
 // If the store already exists, it will update the existing store with the new data.
 // The store's products are not updated, only the store's information.
 // If the store already has products they will be kept.
 // The store's products are updated by the RegistersProducts method.
-func (sm *StoreManager) RegistersAStore(ctx context.Context, req *storemanagerpb.RegistersAStoreRequest) error {
+func (sm *StoreManager) AddStore(ctx context.Context, req *pb.AddStoreRequest) error {
 	newStore, err := store.FromPB(req.GetStore())
 	if err != nil {
 		return fmt.Errorf("creating new store: %w", err)
@@ -59,10 +59,10 @@ func (sm *StoreManager) RegistersAStore(ctx context.Context, req *storemanagerpb
 	return nil
 }
 
-// RegistersProducts adds new products to a store.
+// AddProduct adds a new product to a store.
 // If the store does not exist, it will return an error.
 // If products already exist, it will update the existing products with the new data.
-func (sm *StoreManager) RegistersProducts(ctx context.Context, form *storemanagerpb.RegistersProductsRequest) error {
+func (sm *StoreManager) AddProduct(ctx context.Context, form *pb.AddProductRequest) error {
 	name, err := store.NewName(form.GetStore().GetName().GetValue())
 	if err != nil {
 		return fmt.Errorf("casting store name: %w", err)
@@ -80,15 +80,12 @@ func (sm *StoreManager) RegistersProducts(ctx context.Context, form *storemanage
 		theCatalog[p.Ref] = p
 	}
 
-	newProducts := form.GetStore().GetProducts()
-	for _, p := range newProducts {
-		newProduct, err := product.FromPB(p)
-		if err != nil {
-			return fmt.Errorf("creating new product: %w", err)
-		}
-
-		theCatalog[newProduct.Ref] = newProduct
+	newProduct, err := product.FromPB(form.GetProduct())
+	if err != nil {
+		return fmt.Errorf("creating new product: %w", err)
 	}
+
+	theCatalog[newProduct.Ref] = newProduct
 
 	theStore.Products = make([]product.Product, 0, len(theCatalog))
 	for _, p := range theCatalog {
@@ -103,17 +100,17 @@ func (sm *StoreManager) RegistersProducts(ctx context.Context, form *storemanage
 	return nil
 }
 
-// ReportsOrderIsTaken reports that an order has been taken by the store
+// OrderIsTaken reports that an order has been taken by the store
 // and the order is being prepared.
 // If the order does not exist, it will return an error.
 // If the order is already taken, it will return an error.
-func (sm *StoreManager) ReportsOrderIsTaken(ctx context.Context) error {
+func (sm *StoreManager) OrderIsTaken(ctx context.Context) error {
 	return nil
 }
 
-// ReportsOrderIsReady reports that an order is ready to be delivered.
+// OrderIsReady reports that an order is ready to be delivered.
 // If the order does not exist, it will return an error.
 // If the order is not taken, it will return an error.
-func (sm *StoreManager) ReportsOrderIsReady(ctx context.Context) error {
+func (sm *StoreManager) OrderIsReady(ctx context.Context) error {
 	return nil
 }

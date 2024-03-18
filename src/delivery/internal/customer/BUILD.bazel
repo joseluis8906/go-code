@@ -3,12 +3,6 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "customer",
     srcs = [
-        "asks_for_a_product.go",
-        "asks_for_active_order.go",
-        "asks_to_cancel_order.go",
-        "asks_to_prepare_order.go",
-        "chooses_a_product.go",
-        "confirms_order_delivered.go",
         "customer.go",
         "fields.go",
         "repository.go",
@@ -16,7 +10,6 @@ go_library(
     importpath = "github.com/joseluis8906/go-code/src/delivery/internal/customer",
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
-        "//src/delivery/internal/product",
         "//src/pkg/repository",
         "@org_mongodb_go_mongo_driver//bson",
         "@org_mongodb_go_mongo_driver//mongo",

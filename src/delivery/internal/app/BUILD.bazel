@@ -9,7 +9,6 @@ go_library(
     importpath = "github.com/joseluis8906/go-code/src/delivery/internal/app",
     visibility = ["//src/delivery:__subpackages__"],
     deps = [
-        "//protobuf/delivery/customer:customerpb",
         "//protobuf/delivery/storemanager:storemanagerpb",
         "//src/delivery/internal/app/bus",
         "//src/delivery/internal/app/config",
@@ -18,7 +17,6 @@ go_library(
         "//src/delivery/internal/app/nosql",
         "//src/delivery/internal/app/registry",
         "//src/delivery/internal/customer",
-        "//src/delivery/internal/customer/grpc",
         "//src/delivery/internal/store",
         "//src/delivery/internal/storemanager",
         "@com_github_prometheus_client_golang//prometheus/promhttp",

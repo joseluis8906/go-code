@@ -1,0 +1,12 @@
+method: StoreManager.AddProduct
+metadata:
+  x-auth-email: john.doe@example.com
+request:
+  store:
+    name: Burger King Cabecera
+  product:
+    ref: HAM-001
+    name: American Chess Burger
+    price: 
+      amount: 3
+      currency: USD

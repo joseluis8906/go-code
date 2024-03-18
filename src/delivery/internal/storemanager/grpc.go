@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"log"
 
-	"go.opentelemetry.io/otel"
-
-	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
-	"google.golang.org/protobuf/types/known/emptypb"
+	pb "github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
+	epb "google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/joseluis8906/go-code/src/pkg/grpc"
+	"go.opentelemetry.io/otel"
 )
 
 const authEmail string = "x-auth-email"
@@ -18,18 +17,18 @@ const authEmail string = "x-auth-email"
 type (
 	// DeliveryService represents a delivery service.
 	GRPCServer struct {
-		storemanagerpb.UnimplementedStoreManagerServer
+		pb.UnimplementedStoreManagerServiceServer
 
 		Log    *log.Logger
 		Stores Stores
 	}
 )
 
-// RegistersAStore parses the request and calls the RegistersAStore method of the
+// AddStore parses the request and calls the RegistersAStore method of the
 // storemanager.StoreManager domain actor.
 // It returns an empty response or an error if the actor fails to execute the method.
 // If the gRPC request does not contain a valid x-auth-email header it returns and error.
-func (s *GRPCServer) RegistersAStore(ctx context.Context, req *storemanagerpb.RegistersAStoreRequest) (*emptypb.Empty, error) {
+func (s *GRPCServer) AddStore(ctx context.Context, req *pb.AddStoreRequest) (*epb.Empty, error) {
 	ctx, span := otel.Tracer("").Start(ctx, "storemanager.StoreManager.RegistersAStore")
 	defer span.End()
 
@@ -43,14 +42,14 @@ func (s *GRPCServer) RegistersAStore(ctx context.Context, req *storemanagerpb.Re
 		Stores: s.Stores,
 	}
 
-	return &emptypb.Empty{}, sm.RegistersAStore(ctx, req)
+	return &epb.Empty{}, sm.AddStore(ctx, req)
 }
 
-// RegistersProducts parses the request and calls the RegistersProducts method of the
+// AddProduct parses the request and calls the AddProduct method of the
 // storemanager.StoreManager domain actor.
 // It returns an empty response or an error if the actor fails to execute the method.
 // If the gRPC request does not contain a valid x-auth-email header it returns and error.
-func (s *GRPCServer) RegistersProducts(ctx context.Context, req *storemanagerpb.RegistersProductsRequest) (*emptypb.Empty, error) {
+func (s *GRPCServer) AddProduct(ctx context.Context, req *pb.AddProductRequest) (*epb.Empty, error) {
 	ctx, span := otel.Tracer("").Start(ctx, "storemanager.RegistersProducts")
 	defer span.End()
 
@@ -64,5 +63,5 @@ func (s *GRPCServer) RegistersProducts(ctx context.Context, req *storemanagerpb.
 		Stores: s.Stores,
 	}
 
-	return &emptypb.Empty{}, theStoremanager.RegistersProducts(ctx, req)
+	return &epb.Empty{}, theStoremanager.AddProduct(ctx, req)
 }

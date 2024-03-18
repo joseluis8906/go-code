@@ -7,12 +7,10 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/joseluis8906/go-code/protobuf/delivery/customerpb"
 	"github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	ll "github.com/joseluis8906/go-code/src/delivery/internal/app/log"
-	customer "github.com/joseluis8906/go-code/src/delivery/internal/customer/grpc"
 	"github.com/joseluis8906/go-code/src/delivery/internal/storemanager"
 
 	"github.com/spf13/viper"
@@ -32,7 +30,6 @@ type (
 		Config *viper.Viper
 		Log    *log.Logger
 
-		CustomerServer     *customer.GRPCServer
 		StoreManagerServer *storemanager.GRPCServer
 	}
 )
@@ -58,8 +55,7 @@ func NewGRPCServer(lc fx.Lifecycle, deps Deps) *grpc.Server {
 
 			grpcServer = grpc.NewServer(grpc.StatsHandler(otelgrpc.NewServerHandler()))
 
-			customerpb.RegisterCustomerServer(grpcServer, deps.CustomerServer)
-			storemanagerpb.RegisterStoreManagerServer(grpcServer, deps.StoreManagerServer)
+			storemanagerpb.RegisterStoreManagerServiceServer(grpcServer, deps.StoreManagerServer)
 
 			reflection.Register(grpcServer)
 

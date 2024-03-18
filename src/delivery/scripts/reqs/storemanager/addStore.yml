@@ -1,4 +1,4 @@
-method: StoreManager.RegistersAStore
+method: StoreManager.AddStore
 metadata:
   x-auth-email: john.doe@example.com
 request:
