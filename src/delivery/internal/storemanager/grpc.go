@@ -2,7 +2,6 @@ package storemanager
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	pb "github.com/joseluis8906/go-code/protobuf/delivery/storemanagerpb"
@@ -29,12 +28,14 @@ type (
 // It returns an empty response or an error if the actor fails to execute the method.
 // If the gRPC request does not contain a valid x-auth-email header it returns and error.
 func (s *GRPCServer) AddStore(ctx context.Context, req *pb.AddStoreRequest) (*epb.Empty, error) {
-	ctx, span := otel.Tracer("").Start(ctx, "storemanager.StoreManager.RegistersAStore")
+	ctx, span := otel.Tracer("").Start(ctx, "storemanager.StoreManager.AddStore")
 	defer span.End()
 
 	email, err := grpc.Header(ctx, authEmail).ExpectOne()
 	if err != nil {
-		return nil, fmt.Errorf("getting grpc x-auth-email header: %q", err)
+		s.Log.Printf("getting x-auth-email: %q", err)
+
+		return nil, err
 	}
 
 	sm := StoreManager{
@@ -42,7 +43,12 @@ func (s *GRPCServer) AddStore(ctx context.Context, req *pb.AddStoreRequest) (*ep
 		Stores: s.Stores,
 	}
 
-	return &epb.Empty{}, sm.AddStore(ctx, req)
+	err = sm.AddStore(ctx, req)
+	if err != nil {
+		s.Log.Printf("adding store: %q", err)
+	}
+
+	return &epb.Empty{}, err
 }
 
 // AddProduct parses the request and calls the AddProduct method of the
@@ -50,11 +56,13 @@ func (s *GRPCServer) AddStore(ctx context.Context, req *pb.AddStoreRequest) (*ep
 // It returns an empty response or an error if the actor fails to execute the method.
 // If the gRPC request does not contain a valid x-auth-email header it returns and error.
 func (s *GRPCServer) AddProduct(ctx context.Context, req *pb.AddProductRequest) (*epb.Empty, error) {
-	ctx, span := otel.Tracer("").Start(ctx, "storemanager.RegistersProducts")
+	ctx, span := otel.Tracer("").Start(ctx, "storemanager.AddProduct")
 	defer span.End()
 
 	email, err := grpc.Header(ctx, authEmail).ExpectOne()
 	if err != nil {
+		s.Log.Printf("getting x-auth-email: %q", err)
+
 		return nil, err
 	}
 
@@ -63,5 +71,10 @@ func (s *GRPCServer) AddProduct(ctx context.Context, req *pb.AddProductRequest) 
 		Stores: s.Stores,
 	}
 
-	return &epb.Empty{}, theStoremanager.AddProduct(ctx, req)
+	err = theStoremanager.AddProduct(ctx, req)
+	if err != nil {
+		s.Log.Printf("adding product: %q", err)
+	}
+
+	return &epb.Empty{}, err
 }

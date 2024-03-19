@@ -2,7 +2,6 @@ package grpc
 
 import (
 	"context"
-	"fmt"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -37,12 +36,12 @@ func (r HeaderResult) ExpectMany() ([]string, error) {
 func Header(ctx context.Context, key string) HeaderResult {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
-		return HeaderResult{nil, status.Errorf(codes.DataLoss, "failed to get metadata")}
+		return HeaderResult{nil, status.Errorf(codes.DataLoss, "metadata not found")}
 	}
 
 	val := md.Get(key)
 	if len(val) == 0 {
-		return HeaderResult{nil, status.Errorf(codes.Unauthenticated, fmt.Sprintf("missing %v header", key))}
+		return HeaderResult{nil, status.Errorf(codes.Unauthenticated, "header not found")}
 	}
 
 	return HeaderResult{val, nil}

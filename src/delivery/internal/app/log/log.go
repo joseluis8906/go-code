@@ -83,7 +83,7 @@ func (l *Logger) Write(data []byte) (int, error) {
 	structured["date"] = values[date]
 	structured["line"] = values[line]
 	if noLevel {
-		structured["level"] = "INFO"
+		structured["level"] = "ERROR"
 	} else {
 		structured["level"] = values[level]
 	}
