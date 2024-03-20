@@ -30,10 +30,8 @@ type (
 )
 
 // AddStore creates a new store with the provided data.
-// If the store already exists, it will update the existing store with the new data.
-// The store's products are not updated, only the store's information.
-// If the store already has products they will be kept.
-// The store's products are updated by the RegistersProducts method.
+// If the store already exists, it will return an error.
+// The store's products are discarted.
 func (sm *StoreManager) AddStore(ctx context.Context, req *pb.AddStoreRequest) error {
 	newStore, err := store.FromPB(req.GetStore())
 	if err != nil {
@@ -41,9 +39,8 @@ func (sm *StoreManager) AddStore(ctx context.Context, req *pb.AddStoreRequest) e
 	}
 
 	criteria := repository.Equals(store.Fields().Name, fmt.Sprintf("%s", newStore.Name))
-
-	oldStore, err := sm.Stores.Get(ctx, criteria).ExpectOne()
-	if err != nil && !errors.Is(err, repository.ErrNoData) {
+	oldStore, err := sm.Stores.Get(ctx, criteria).One()
+	if err != nil {
 		return fmt.Errorf("verifing exisiting store: %w", err)
 	}
 
@@ -61,7 +58,7 @@ func (sm *StoreManager) AddStore(ctx context.Context, req *pb.AddStoreRequest) e
 
 // AddProduct adds a new product to a store.
 // If the store does not exist, it will return an error.
-// If products already exist, it will update the existing products with the new data.
+// If products already exist, it will update the existing product with new data.
 func (sm *StoreManager) AddProduct(ctx context.Context, form *pb.AddProductRequest) error {
 	name, err := store.NewName(form.GetStore().GetName().GetValue())
 	if err != nil {
@@ -69,30 +66,28 @@ func (sm *StoreManager) AddProduct(ctx context.Context, form *pb.AddProductReque
 	}
 
 	criteria := repository.Contains(store.Fields().Name, fmt.Sprintf("%s", name))
-
-	theStore, err := sm.Stores.Get(ctx, criteria).ExpectOne()
+	store, err := sm.Stores.Get(ctx, criteria).One()
 	if err != nil {
 		return fmt.Errorf("getting store: %w", err)
 	}
 
-	theCatalog := make(map[product.Ref]product.Product, len(theStore.Products))
-	for _, p := range theStore.Products {
-		theCatalog[p.Ref] = p
+	catalog := make(map[product.Ref]product.Product, len(store.Products))
+	for _, p := range store.Products {
+		catalog[p.Ref] = p
 	}
 
-	newProduct, err := product.FromPB(form.GetProduct())
+	newPrd, err := product.FromPB(form.GetProduct())
 	if err != nil {
 		return fmt.Errorf("creating new product: %w", err)
 	}
 
-	theCatalog[newProduct.Ref] = newProduct
-
-	theStore.Products = make([]product.Product, 0, len(theCatalog))
-	for _, p := range theCatalog {
-		theStore.Products = append(theStore.Products, p)
+	catalog[newPrd.Ref] = newPrd
+	store.Products = make([]product.Product, 0, len(catalog))
+	for _, p := range catalog {
+		store.Products = append(store.Products, p)
 	}
 
-	err = sm.Stores.Add(ctx, theStore)
+	err = sm.Stores.Add(ctx, store)
 	if err != nil {
 		return fmt.Errorf("persisting store: %w", err)
 	}

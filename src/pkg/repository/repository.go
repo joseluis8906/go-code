@@ -4,8 +4,6 @@ import "errors"
 
 const Limit = 10
 
-var ErrNoData = errors.New("no data found")
-
 func Page(page int64) int64 {
 	return int64(Limit * (page - 1))
 }
@@ -15,14 +13,17 @@ type Result[T any] struct {
 	err  error
 }
 
-func (r Result[T]) ExpectOne() (T, error) {
+// One returns the first item in the data collection.
+// if there are more than one item, it will return an error.
+// if an error occurred during the query, it will return the error.
+func (r Result[T]) One() (T, error) {
 	var defaultData T
 	if r.err != nil {
 		return defaultData, r.err
 	}
 
 	if len(r.data) == 0 {
-		return defaultData, ErrNoData
+		return defaultData, nil
 	}
 
 	if len(r.data) > 1 {
@@ -32,13 +33,11 @@ func (r Result[T]) ExpectOne() (T, error) {
 	return r.data[0], nil
 }
 
-func (r Result[T]) ExpectMany() ([]T, error) {
+// Many returns all items in the data collection.
+// if an error occurred during the query, it will return the error.
+func (r Result[T]) Many() ([]T, error) {
 	if r.err != nil {
 		return nil, r.err
-	}
-
-	if len(r.data) == 0 {
-		return nil, ErrNoData
 	}
 
 	return r.data, nil
